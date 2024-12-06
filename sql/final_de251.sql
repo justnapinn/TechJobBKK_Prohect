@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2024 at 10:07 AM
+-- Generation Time: Dec 06, 2024 at 10:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,8 @@ CREATE TABLE `jobs` (
   `job_id` varchar(255) NOT NULL,
   `user_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `job_type` enum('Hybrid','Work-From-Home','Onsite','') NOT NULL
+  `job_type` enum('Hybrid','Work-From-Home','Onsite','') NOT NULL,
+  `description` varchar(2000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
