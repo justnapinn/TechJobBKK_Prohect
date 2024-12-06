@@ -1,7 +1,7 @@
 # TechJobBKK_Project
 1.  Home page + feed - Pukao
-2.  Login() - Kla esan   
-3.  Register - Kla kin mha
+2.  Login() - Kla 
+3.  Register - Kla 
     - Employees
     - Company
 4.  Job post (each one) - 1st  
