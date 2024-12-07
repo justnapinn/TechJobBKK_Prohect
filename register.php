@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($stmt->execute()) {
         echo "<script>
             alert('Registration completed!');
-            window.location.href = 'login.html';
+            window.location.href = 'login.php';
         </script>";
         exit();
     } else {
@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 Register
             </button>
         </div>
-        <p class="text-center text-sm text-gray-600">Already have an account? <a href="login.html"
+        <p class="text-center text-sm text-gray-600">Already have an account? <a href="login.php"
                                                                                  class="text-blue-500 hover:underline">Login
                 here</a></p>
     </form>
