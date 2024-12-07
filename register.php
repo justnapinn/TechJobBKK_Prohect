@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif ($user_type == 2) {
         $user_type = 'company';
         $last_name = 'Company';
+        $birthday  = '2023-10-21';
     } else {
         $user_type = 'admin';
     }
