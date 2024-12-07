@@ -1,8 +1,8 @@
 # TechJobBKK_Project
 1.  - [ ] Home page + feed - Pukao
 2.  - [x] Login - Kla 
-3.  - [x] Register - Kla 
-    - Employees
+3.  - [ ] Register - Kla 
+    - Applicants
     - Company
 4.  - [ ] Job post (each one) - 1st  
 5.  - [x] Profile editing - Japan
