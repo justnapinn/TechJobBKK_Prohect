@@ -12,17 +12,7 @@ include('navbar.php');
 </head>
 
 <body class="font-sans text-gray-700 bg-gray-100">
-<nav class="bg-blue-500 text-white py-4">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-        <a href="#" class="text-2xl font-bold">TechJobBkk</a>
-        <ul class="flex gap-4">
-            <li><a href="#">หางาน</a></li>
-            <li><a href="register.html">สมัครสมาชิก</a></li>
-            <li><a href="login.html">เข้าสู่ระบบ</a></li>
-        </ul>
-    </div>
-</nav>
-
+<?php generateNavbar(); ?>
 <section class="search-section bg-blue-500 text-black py-8">
     <div class="container mx-auto max-w-lg bg-white p-6 rounded-lg shadow-md">
         <form class="space-y-4" action="result.php" method="GET">
