@@ -46,18 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md">
     <h2 class="text-2xl font-bold mb-6 text-center">Create Job Post</h2>
 
-    <?php if ($error_message): ?>
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <?php echo $error_message; ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($success_message): ?>
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <?php echo $success_message; ?>
-        </div>
-    <?php endif; ?>
-
     <form method="POST" class="space-y-4">
         <div>
             <label class="block text-gray-700 text-sm font-bold mb-2">Job Title</label>
@@ -94,5 +82,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </form>
 </div>
+
+<!-- Notification Popup -->
+<div id="notification" class="fixed top-4 right-4 z-50 hidden">
+    <div id="notificationContent"
+         class="py-4 px-6 rounded-lg shadow-lg text-white transition-all duration-300 ease-in-out"></div>
+</div>
+
+<script>
+    // Function to show notification
+    function showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        const notificationContent = document.getElementById('notificationContent');
+
+        // Reset classes
+        notificationContent.classList.remove('bg-green-500', 'bg-red-500');
+
+        // Set color based on type
+        if (type === 'success') {
+            notificationContent.classList.add('bg-green-500');
+        } else {
+            notificationContent.classList.add('bg-red-500');
+        }
+
+        // Set message
+        notificationContent.textContent = message;
+
+        // Show notification
+        notification.classList.remove('hidden');
+
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            notification.classList.add('hidden');
+        }, 3000);
+    }
+
+    // Check for PHP messages and show notification
+    <?php if (!empty($success_message)): ?>
+    showNotification('<?php echo $success_message; ?>', 'success');
+    <?php endif; ?>
+
+    <?php if (!empty($error_message)): ?>
+    showNotification('<?php echo $error_message; ?>', 'error');
+    <?php endif; ?>
+</script>
 </body>
 </html>
