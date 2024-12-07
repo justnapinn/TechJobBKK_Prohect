@@ -20,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_type'] = $user['user_type'];
 
             if ($user['user_type'] == 'admin') {
-                header("Location: admin_dashboard.php");  // ไปหน้า dashboard ของ admin
+                header("Location: index.html");  // ไปหน้า dashboard ของ admin
             } elseif ($user['user_type'] == 'applicant') {
-                header("Location: applicant_dashboard.php"); // ไปหน้า dashboard ของ applicant
+                header("Location: index.html"); // ไปหน้า dashboard ของ applicant
             } elseif ($user['user_type'] == 'company') {
-                header("Location: company_dashboard.php"); // ไปหน้า dashboard ของ company
+                header("Location: index.html"); // ไปหน้า dashboard ของ company
             }
             exit();
         } else {
