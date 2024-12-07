@@ -3,30 +3,31 @@ session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
 
-// Sanitize and process search inputs
+// Get search parameters from the form
 $keyword = $_GET['keyword'] ?? '';
-$job_type = $_GET['job_type'] ?? '';
+$job_type = $_GET['job-type'] ?? '';
 
 // Build the SQL query based on the search parameters
-// Build the SQL query with a JOIN to the users table
 $sql = "SELECT j.*, u.first_name
         FROM jobs j
         INNER JOIN users u ON j.user_id = u.user_id";
+
 $where_clause = [];
 
 if (!empty($keyword)) {
-    $where_clause[] = "title LIKE '%$keyword%' OR user_id LIKE '%$keyword%'";
+    $where_clause[] = "(j.title LIKE '%$keyword%' OR u.username LIKE '%$keyword%')";
 }
 
-if (!empty($work_type)) {
-    $where_clause[] = "job_type = '$work_type'";
+if (!empty($job_type)) {
+    $where_clause[] = "j.job_type = '$job_type'";
 }
 
+// Combine the where clauses using AND
 if (!empty($where_clause)) {
     $sql .= " WHERE " . implode(' AND ', $where_clause);
 }
 
-// Prepare and execute the statement
+// Execute the query
 $result = $conn->query($sql);
 ?>
 
