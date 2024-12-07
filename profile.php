@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body class="bg-gray-100 min-h-screen items-center justify-center">
 <?php generateNavbar(); ?>
-<section class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md">
+<div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
     <form method="POST" class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </button>
         </div>
     </form>
-</section>
+</div>
 
 <!-- Notification Popup -->
 <div id="notification" class="fixed top-4 right-4 z-50 hidden">
