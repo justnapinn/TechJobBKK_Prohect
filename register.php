@@ -22,13 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    // ตรวจสอบอีเมลว่าลงท้ายด้วย @gmail.com 
-    if (!preg_match('/^[a-zA-Z0-9._%+-]+@gmail\.com$/', $user_email)) {
-        header("Location: register.html?error=Invalid+email.+Email+must+be+a+valid+@gmail.com+address.");
+    // ตรวจสอบอีเมลว่าลงท้ายด้วย @[alphabet].[alphabet]
+    if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]+$/', $user_email)) {
+        header("Location: register.html?error=Invalid+email.+Email+must+be+a+valid+email+address.");
         exit();
     }
 
 
+    // แปลง user_type จากตัวเลขเป็น enum
     if ($user_type == 1) {
         $user_type = 'applicant';
     } elseif ($user_type == 2) {
@@ -37,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user_type = 'admin';
     }
 
+    // ตรวจสอบข้อมูลซ้ำ
     $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR user_email = ? OR user_phone = ? OR (first_name = ? AND last_name = ?)");
     $stmt->bind_param("sssss", $username, $user_email, $user_phone, $first_name, $last_name);
     $stmt->execute();
@@ -48,20 +50,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             window.location.href = 'register.html';
         </script>";
         exit();
+    }
+
+    $stmt->close(); // ปิด statement ก่อนสร้าง statement ใหม่
+
+    // บันทึกข้อมูลใหม่ลงในฐานข้อมูล
+    $stmt = $conn->prepare("INSERT INTO users (user_id, user_type, username, password, first_name, last_name, birthday, address, subdistrict, district, postal_code, user_email, user_phone) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssssssss", $user_type, $username, $password, $first_name, $last_name, $birthday, $address, $subdistrict, $district, $postal_code, $user_email, $user_phone);
+
+    if ($stmt->execute()) {
+        echo "<script>
+            alert('Registration completed!');
+            window.location.href = 'login.html';
+        </script>";
+        exit();
     } else {
-        if ($stmt->execute()) {
-            echo "<script>
-                alert('Registration completed!');
-                window.location.href = 'login.html';
-            </script>";
-            exit();
-        } else {
-            echo "<script>
-                alert('Registration failed. Please try again.');
-                window.location.href = 'register.html';
-            </script>";
-            exit();
-        }
+        echo "<script>
+            alert('Registration failed. Please try again.');
+            window.location.href = 'register.html';
+        </script>";
+        exit();
     }
 
     $stmt->close();
