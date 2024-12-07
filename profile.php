@@ -198,6 +198,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <script>
+    // Thailand.js integration
+    $.Thailand({
+        $district: $('#district'), // input of the district
+        $amphoe: $('#amphoe'),    // input of the subdistrict
+        $province: $('#province'), // input of the province
+        $zipcode: $('#zipcode')   // input of the postal code
+    });
+
     // Function to show notification
     function showNotification(message, type = 'success') {
         const notification = document.getElementById('notification');
