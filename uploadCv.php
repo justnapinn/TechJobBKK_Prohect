@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "There was an error uploading your file.";
     }
 }
-
+//
 // ปิดการเชื่อมต่อ
 $conn->close();
 ?>
