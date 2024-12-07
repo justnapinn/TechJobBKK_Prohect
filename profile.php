@@ -21,7 +21,7 @@ $user_data = $result->fetch_assoc();
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize and validate input
+    // Sanitize and validate input (with additional validations)
     $first_name = htmlspecialchars(trim($_POST['first_name']));
     $last_name = htmlspecialchars(trim($_POST['last_name']));
     $birthday = $_POST['birthday'];
@@ -33,26 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_email = filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL);
     $user_phone = htmlspecialchars(trim($_POST['user_phone']));
 
-    // Validate inputs
-    if (empty($first_name) || empty($last_name) || empty($birthday) ||
-        empty($address) || empty($subdistrict) || empty($district) || empty($province) ||
-        empty($postal_code) || !$user_email || empty($user_phone)) {
-        $error_message = "All fields are required.";
-    } else {
-        // Check if any data has actually changed
-        $changed = false;
-        $fields = ['first_name', 'last_name', 'birthday', 'address', 'subdistrict', 'district', 'province',
-            'postal_code', 'user_email', 'user_phone'];
+    // Comprehensive validations
+    $errors = [];
+    if (empty($first_name)) $errors[] = "First name is required.";
+    if (empty($last_name)) $errors[] = "Last name is required.";
+    if (empty($birthday) || strtotime($birthday) > time()) $errors[] = "Invalid birthday.";
+    if (empty($address)) $errors[] = "Address is required.";
+    if (!$user_email) $errors[] = "Invalid email address.";
+    if (!preg_match('/^[0-9]{10}$/', $user_phone)) $errors[] = "Invalid phone number.";
 
-        foreach ($fields as $field) {
-            if ($user_data[$field] != ${$field}) {
-                $changed = true;
-                break;
-            }
-        }
-
-        if ($changed) {
-            $stmt = $conn->prepare("UPDATE users SET 
+    if (empty($errors)) {
+        $stmt = $conn->prepare("UPDATE users SET 
             first_name = ?, 
             last_name = ?, 
             birthday = ?, 
@@ -65,35 +56,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             user_phone = ? 
             WHERE user_id = ?");
 
-            $stmt->bind_param("ssssssssss",
-                $first_name, $last_name, $birthday,
-                $address, $subdistrict, $district,
-                $postal_code, $user_email, $user_phone, $user_id);
+        $stmt->bind_param("sssssssssss",
+            $first_name, $last_name, $birthday,
+            $address, $subdistrict, $district,
+            $province, $postal_code, $user_email, $user_phone, $user_id);
 
-            if ($stmt->execute()) {
-                $success_message = "Profile updated successfully!";
-                // Refresh user data
-                $user_data = [
-                    'first_name' => $first_name,
-                    'last_name' => $last_name,
-                    'birthday' => $birthday,
-                    'address' => $address,
-                    'subdistrict' => $subdistrict,
-                    'district' => $district,
-                    'province' => $province,
-                    'postal_code' => $postal_code,
-                    'user_email' => $user_email,
-                    'user_phone' => $user_phone
-                ];
-            } else {
-                $error_message = "Update failed. " . $conn->error;
-            }
+        if ($stmt->execute()) {
+            // Re-fetch updated user data
+            $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = ?");
+            $stmt->bind_param("s", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user_data = $result->fetch_assoc();
+            $success_message = "Profile updated successfully!";
         } else {
-            // No changes were made
-            $error_message = "No changes detected in the profile.";
+            $error_message = "Update failed: " . $conn->error;
         }
+    } else {
+        $error_message = implode(" ", $errors);
     }
-
 }
 ?>
 
@@ -153,7 +134,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                        value="<?php echo htmlspecialchars($user_data['user_phone']); ?>" required>
             </div>
+        </div>
 
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Address</label>
+            <textarea name="address" rows="3"
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      required><?php echo htmlspecialchars($user_data['address']); ?></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
@@ -161,17 +148,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label class="block text-gray-700 text-sm font-bold mb-2">Sub district</label>
                 <input type="text" name="subdistrict"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="amphoe"
+                       id="district"
                        value="<?php echo htmlspecialchars($user_data['subdistrict']); ?>" required>
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-bold mb-2">District</label>
                 <input type="text" name="district"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="district"
+                       id="amphoe"
                        value="<?php echo htmlspecialchars($user_data['district']); ?>" required>
             </div>
         </div>
+
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-gray-700 text-sm font-bold mb-2">Province</label>
@@ -189,7 +177,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
 
-
         <div class="flex items-center justify-center">
             <button type="submit"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -198,6 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </form>
 </div>
+
 <!-- Notification Popup -->
 <div id="notification" class="fixed top-4 right-4 z-50 hidden">
     <div id="notificationContent"
@@ -207,10 +195,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script>
     // Thailand.js integration
     $.Thailand({
-        $district: $('#district'), // input of the sub-district
-        $amphoe: $('#amphoe'),    // input of the district
-        $province: $('#province'), // input of the province
-        $zipcode: $('#zipcode')   // input of the postal code
+        $district: $('#district'),
+        $amphoe: $('#amphoe'),
+        $province: $('#province'),
+        $zipcode: $('#zipcode')
     });
 
     // Function to show notification
@@ -242,11 +230,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Check for PHP messages and show notification
     <?php if (!empty($success_message)): ?>
-    showNotification('<?php echo $success_message; ?>', 'success');
+    showNotification('<?php echo htmlspecialchars($success_message, ENT_QUOTES); ?>', 'success');
     <?php endif; ?>
 
     <?php if (!empty($error_message)): ?>
-    showNotification('<?php echo $error_message; ?>', 'error');
+    showNotification('<?php echo htmlspecialchars($error_message, ENT_QUOTES); ?>', 'error');
     <?php endif; ?>
 </script>
 </body>
