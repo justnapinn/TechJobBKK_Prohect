@@ -200,8 +200,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script>
     // Thailand.js integration
     $.Thailand({
-        $district: $('#district'), // input of the district
-        $amphoe: $('#amphoe'),    // input of the subdistrict
+        $district: $('#district'), // input of the sub-district
+        $amphoe: $('#amphoe'),    // input of the district
         $province: $('#province'), // input of the province
         $zipcode: $('#zipcode')   // input of the postal code
     });
