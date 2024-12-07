@@ -100,10 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Edit Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
-    <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
-    <link rel="stylesheet" href="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css">
-    <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
+    <script type="text/javascript"
+            src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
+    <script type="text/javascript"
+            src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
+    <link rel="stylesheet"
+          href="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css">
+    <script type="text/javascript"
+            src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
 <div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md">
@@ -150,6 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label class="block text-gray-700 text-sm font-bold mb-2">Postal Code</label>
                 <input type="text" name="postal_code"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="zipcode"
                        value="<?php echo htmlspecialchars($user_data['postal_code']); ?>" required>
             </div>
         </div>
@@ -166,12 +171,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label class="block text-gray-700 text-sm font-bold mb-2">Sub district</label>
                 <input type="text" name="subdistrict"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="amphoe"
                        value="<?php echo htmlspecialchars($user_data['subdistrict']); ?>" required>
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-bold mb-2">District</label>
                 <input type="text" name="district"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="province"
                        value="<?php echo htmlspecialchars($user_data['district']); ?>" required>
             </div>
         </div>
