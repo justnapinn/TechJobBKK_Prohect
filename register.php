@@ -1,5 +1,6 @@
 <?php
-require 'databaseConnect.php';
+require_once 'databaseConnect.php';
+include('navbar.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_type = $_POST['user_type'];
@@ -85,7 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>TechJobBKK - Registration</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-blue-500">
+<body class="bg-[#f5d472]">
+<?php generateNavbar(); ?>
 <div class="max-w-lg mx-auto mt-12 bg-white p-8 rounded-lg shadow-md">
     <h2 class="text-center text-2xl font-bold text-gray-800 mb-6">Register to TechJobBKK</h2>
     <form method="POST" class="space-y-4">
