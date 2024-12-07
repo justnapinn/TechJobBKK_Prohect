@@ -182,8 +182,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Company Field -->
             <div id="company-fields" class="d-none">
                 <div class="mb-3">
-                    <label for="company_name" class="form-label">Company Name:</label>
-                    <input type="text" name="first_name" id="company_name" class="form-control" placeholder="Company Name" required>
+                    <label for="first_name" class="form-label">Company Name:</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Company Name" required>
                 </div>
             </div>
         
@@ -255,7 +255,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 document.getElementById('last_name').required = false;
             }
         });
-        
     
         $.Thailand({
             $district: $('#district'), 
@@ -263,7 +262,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $province: $('#province'), 
             $zipcode: $('#zipcode'), 
         });
-
 
     </script>
 
