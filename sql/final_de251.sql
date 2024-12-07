@@ -67,6 +67,7 @@ CREATE TABLE `users` (
   `address` varchar(255) NOT NULL,
   `subdistrict` varchar(255) NOT NULL,
   `district` varchar(255) NOT NULL,
+  `province` varchar(255) NOT NULL,
   `postal_code` varchar(255) NOT NULL,
   `user_email` varchar(255) NOT NULL,
   `user_phone` varchar(255) NOT NULL
