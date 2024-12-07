@@ -79,17 +79,8 @@
 <body>
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "final_de251";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+session_start();
+require 'databaseConnect.php';
 
 $sql_company = "SELECT first_name FROM users WHERE user_id = '1'";
 $result_company = $conn->query($sql_company);

@@ -1,16 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "final_de251";
-
-// สร้างการเชื่อมต่อฐานข้อมูล
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// ตรวจสอบการเชื่อมต่อ
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+session_start();
+require 'databaseConnect.php';
 
 // ตรวจสอบว่ามีการส่งข้อมูลผ่าน POST หรือไม่
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
