@@ -46,8 +46,10 @@ CREATE TABLE `jobs` (
   `job_id` varchar(255) NOT NULL,
   `user_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `job_type` enum('Hybrid','Work-From-Home','Onsite','') NOT NULL,
-  `description` varchar(2000) NOT NULL
+  `job_type` enum('Hybrid','Work-From-Home','Onsite') NOT NULL,
+  `description` varchar(2000) NOT NULL,
+  `welfare` varchar(2000) NOT NULL,
+  `contact` varchar(2000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -70,7 +72,8 @@ CREATE TABLE `users` (
   `province` varchar(255) NOT NULL,
   `postal_code` varchar(255) NOT NULL,
   `user_email` varchar(255) NOT NULL,
-  `user_phone` varchar(255) NOT NULL
+  `user_phone` varchar(255) NOT NULL,
+  `logo` varchar(255) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
