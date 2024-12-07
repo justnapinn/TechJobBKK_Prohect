@@ -11,34 +11,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $address = $_POST['address'];
     $subdistrict = $_POST['subdistrict'];
     $district = $_POST['district'];
+    $province = $_POST['province'];
     $postal_code = $_POST['postal_code'];
     $user_email = $_POST['user_email'];
     $user_phone = $_POST['user_phone'];
 
-    // ตรวจสอบวันเกิด
-    $current_date = date('Y-m-d'); // วันที่ปัจจุบันในรูปแบบ YYYY-MM-DD
+    // Check date of birth
+    $current_date = date('Y-m-d'); // Current date in format YYYY-MM-DD
     if ($birthday >= $current_date) {
         header("Location: register.html?error=Invalid+birthdate.+Birthdate+must+be+before+today.");
         exit();
     }
 
-    // ตรวจสอบอีเมลว่าลงท้ายด้วย @[alphabet].[alphabet]
+    // Check the email to see if it ends with @[alphabet].[alphabet]
     if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]+$/', $user_email)) {
         header("Location: register.html?error=Invalid+email.+Email+must+be+a+valid+email+address.");
         exit();
     }
 
-
-    // แปลง user_type จากตัวเลขเป็น enum
+    // Convert user_type from integer to enum
     if ($user_type == 1) {
         $user_type = 'applicant';
     } elseif ($user_type == 2) {
         $user_type = 'company';
+        $last_name = 'Company';
     } else {
         $user_type = 'admin';
     }
 
-    // ตรวจสอบข้อมูลซ้ำ
+    // check for duplicate data
     $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR user_email = ? OR user_phone = ? OR (first_name = ? AND last_name = ?)");
     $stmt->bind_param("sssss", $username, $user_email, $user_phone, $first_name, $last_name);
     $stmt->execute();
@@ -52,11 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    $stmt->close(); // ปิด statement ก่อนสร้าง statement ใหม่
+    $stmt->close(); 
 
-    // บันทึกข้อมูลใหม่ลงในฐานข้อมูล
-    $stmt = $conn->prepare("INSERT INTO users (user_id, user_type, username, password, first_name, last_name, birthday, address, subdistrict, district, postal_code, user_email, user_phone) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssssss", $user_type, $username, $password, $first_name, $last_name, $birthday, $address, $subdistrict, $district, $postal_code, $user_email, $user_phone);
+    // save new row in database
+    $stmt = $conn->prepare("INSERT INTO users (user_id, user_type, username, password, first_name, last_name, birthday, address, subdistrict, district,province, postal_code, user_email, user_phone) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+    $stmt->bind_param("sssssssssssss", $user_type, $username, $password, $first_name, $last_name, $birthday, $address, $subdistrict, $district,$province, $postal_code, $user_email, $user_phone);
 
     if ($stmt->execute()) {
         echo "<script>

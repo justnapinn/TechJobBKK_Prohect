@@ -20,20 +20,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_type'] = $user['user_type'];
 
             if ($user['user_type'] == 'admin') {
-                header("Location: index.html");  // ไปหน้า dashboard ของ admin
+                header("Location: index.html");  // go to dashboard for admin
             } elseif ($user['user_type'] == 'applicant') {
-                header("Location: index.html"); // ไปหน้า dashboard ของ applicant
+                header("Location: index.html"); // go to dashboard for applicant
             } elseif ($user['user_type'] == 'company') {
-                header("Location: index.html"); // ไปหน้า dashboard ของ company
+                header("Location: index.html"); // go to dashboard for company
             }
             exit();
         } else {
-            // รหัสผ่านผิด
+            // wrong password
             header("Location: login.html?error=Incorrect+password");
             exit();
         }
     } else {
-        // ไม่เจอ username
+        // not found username
         header("Location: login.html?error=Username+not+found");
         exit();
     }
