@@ -1,0 +1,284 @@
+/* ตั้งค่าเริ่มต้น 
+
+*{
+    margin: 0;
+    padding: 0 ;
+    box-sizing: border-box;
+}
+
+
+.container{
+    margin: 0 auto;
+    padding :10px 30px  ;
+}
+
+nav{
+    background: orange;
+}
+
+.nav-con{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    gap:20px;
+}
+
+.menu{
+    display: flex;
+}
+
+.menu li{
+    list-style: none;
+    margin-left: 1rem;
+}
+a {
+    color:white;
+    text-decoration: none;
+}
+
+.logo a{
+    font-size: 1.5rem;
+} */
+
+
+
+
+
+
+
+/*ตกแต่งกล่องค้นหา*
+
+.search-section {
+    display: flex;
+    justify-content: flex-start;  
+    align-items: flex-start;
+    padding: 20px;
+    height: 100vh; /* สูงเต็มหน้าจอ 
+    background-color: #f5f5f5; /* สีพื้นหลังของส่วนนี้ 
+    margin-top: 50px;
+} */
+
+/* กำหนดพื้นที่ครึ่งซ้าย 
+.search-container {
+    width: 50%; /* ใช้พื้นที่ครึ่งซ้าย 
+    margin-right: auto; /* ทำให้เนื้อหาอยู่ทางซ้าย 
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+} */
+
+/* หัวข้อ 
+.search-container h1 {
+    font-size: 24px;
+    color: orange;
+    margin-bottom: 10px;
+} 
+
+.search-container p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* แบบฟอร์ม 
+.search-form {
+    display: flex;
+    flex-direction: column; /* จัดรายการในแนวตั้ง 
+    gap: 15px; /* ช่องว่างระหว่างรายการ 
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* ปุ่มค้นหา 
+.search-btn {
+    background-color: orange;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+    background-color: darkorange;
+}
+
+/* ช่องกรอกข้อมูล 
+input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* กลุ่ม Radio 
+.radio-group {
+    display: flex;
+    gap: 20px; /* ช่องว่างระหว่างปุ่ม 
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+}
+
+
+
+.section-PopularSearch{
+    display: flex;
+    justify-content: flex-end; /* ให้เริ่มจัดกล่องจากฝั่งซ้าย 
+    align-items: flex-end;
+    padding: 20px;
+    height: 100vh; /* สูงเต็มหน้าจอ 
+    background-color: #f5f5f5; /* สีพื้นหลังของส่วนนี้ 
+    margin-top: 50px;
+} */
+
+/* Reset */
+body, h1, h2, h3, p, ul, li, a, input, button, select {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Body */
+body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+/* Navbar */
+nav {
+    background: #007bff;
+    color: white;
+    padding: 0.5rem 0;
+}
+
+nav .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+nav .logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+nav .menu {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav .menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+nav .menu li a:hover {
+    color: #ffdd57;
+}
+
+/* Search Section */
+.search-section {
+    background: #007bff;
+    color: white;
+    padding: 2rem 1rem;
+}
+
+.search-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.search-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.search-form input, 
+.search-form select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.radio-group label {
+    display: inline-block;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.search-btn {
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search-btn:hover {
+    background: #0056b3;
+}
+
+/* Popular Companies Section */
+.section-PopularCompany {
+    padding: 2rem 1rem;
+    text-align: center;
+    background: #f1f1f1;
+}
+
+.PopularCompany-container h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.PopularCompany-container img {
+    width: 150px;
+    height: auto;
+    margin: 0.5rem;
+    transition: transform 0.3s;
+}
+
+.PopularCompany-container img:hover {
+    transform: scale(1.1);
+}
