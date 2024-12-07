@@ -4,8 +4,23 @@ session_start();
 function generateNavbar(): void
 {
     if (isset($_SESSION['user_id'])) {
-        // Logged-in navbar
-        echo '
+        if ($_SESSION['user_type'] == 'company') {
+            // Company navbar
+            echo '
+            <nav class="bg-blue-500 text-white py-4">
+                <div class="container mx-auto px-4 flex justify-between items-center">
+                    <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
+                    <div class="space-x-4">
+                    <a href="createPost.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">Post</a>
+                       <a href="profile.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">Profile</a>
+                        <a href="logout.php" class="text-black hover:bg-gray-700 bg-gray-600 px-3 py-2 rounded">Logout</a>
+                    </div>
+                </div>
+            </nav>';
+            return;
+        } else {
+            // Applicants navbar
+            echo '
         <nav class="bg-blue-500 text-white py-4">
             <div class="container mx-auto px-4 flex justify-between items-center">
                 <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
@@ -15,6 +30,7 @@ function generateNavbar(): void
                 </div>
             </div>
         </nav>';
+        }
     } else {
         // Not logged-in navbar
         echo '
