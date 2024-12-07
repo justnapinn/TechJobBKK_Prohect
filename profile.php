@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2">Subdistrict</label>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Sub district</label>
                 <input type="text" name="subdistrict"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                        value="<?php echo htmlspecialchars($user_data['subdistrict']); ?>" required>
