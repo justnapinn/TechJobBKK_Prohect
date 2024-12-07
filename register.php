@@ -2,6 +2,12 @@
 require_once 'databaseConnect.php';
 include('navbar.php');
 
+// Check if user is logged in
+if (isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_type = $_POST['user_type'];
     $username = $_POST['username'];
