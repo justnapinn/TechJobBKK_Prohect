@@ -1,64 +1,96 @@
 <?php
 session_start();
-require 'databaseConnect.php';
+require_once 'databaseConnect.php'; // Assume this file handles database connection
 
-
-// รับค่าจากฟอร์ม
-$location = $_GET['location'] ?? 'all';
-$job_type = $_GET['job_type'] ?? 'all';
+// Sanitize and process search inputs
+$location = $_GET['location'] ?? 'กรุงเทพฯ';
 $keyword = $_GET['keyword'] ?? '';
+$job_type = $_GET['job_type'] ?? '';
 
-// สร้าง SQL Query
-$sql = "SELECT * FROM companies WHERE 1=1";
-$sqljoin_user = "SELECT * FROM    users RIGHT JOIN     jobs ON  users.user_id = jobs.user_id";
+// Construct dynamic SQL query
+$query = "SELECT jobs.*, users.first_name, users.last_name, users.logo 
+          FROM jobs 
+          JOIN users ON jobs.user_id = users.user_id 
+          WHERE 1=1";
 
-if ($location !== 'all') {
-    $sql .= " AND location = '$location'";
-}
+$params = [];
 
-if ($job_type !== 'all') {
-    $sql .= " AND job_type = '$job_type'";
+if (!empty($location)) {
+    $query .= " AND users.province = ?";
+    $params[] = $location;
 }
 
 if (!empty($keyword)) {
-    $sql .= " AND (company_name LIKE '%$keyword%' OR job_title LIKE '%$keyword%')";
+    $query .= " AND (jobs.title LIKE ? OR jobs.description LIKE ?)";
+    $params[] = "%$keyword%";
+    $params[] = "%$keyword%";
 }
 
-// ดึงข้อมูลจากฐานข้อมูล
-$result = $conn->query($sql);
+if (!empty($job_type)) {
+    $query .= " AND jobs.job_type = ?";
+    $params[] = $job_type;
+}
+
+// Prepare and execute the statement
+$stmt = $conn->prepare($query);
+if (!empty($params)) {
+    $types = str_repeat('s', count($params));
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ผลการค้นหา - TechJobBKK</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<section class="results-section">
-    <div class="container">
-        <h1>ผลการค้นหา</h1>
+    <!DOCTYPE html>
+    <html lang="th">
+    <head>
+        <meta charset="UTF-8">
+        <title>Job Search Results - TechJobBkk</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    </head>
+    <body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold mb-6">ผลการค้นหางาน</h1>
+
         <?php if ($result->num_rows > 0): ?>
-            <ul class="company-list">
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <li class="company-item">
-                        <h2><?php echo $row['company_name']; ?></h2>
-                        <p>ตำแหน่งงาน: <?php echo $row['job_title']; ?></p>
-                        <p>สถานที่: <?php echo $row['location']; ?></p>
-                        <p>ประเภทงาน: <?php echo $row['job_type']; ?></p>
-                    </li>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php while ($job = $result->fetch_assoc()): ?>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center mb-4">
+                            <?php if (!empty($job['logo'])): ?>
+                                <img src="<?php echo htmlspecialchars($job['logo']); ?>" alt="Company Logo"
+                                     class="w-16 h-16 mr-4 rounded-full">
+                            <?php endif; ?>
+                            <h2 class="text-xl font-semibold"><?php echo htmlspecialchars($job['title']); ?></h2>
+                        </div>
+                        <p class="text-gray-600 mb-2">
+                            <?php echo htmlspecialchars($job['first_name'] . ' ' . $job['last_name']); ?>
+                        </p>
+                        <div class="mb-4">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                <?php echo htmlspecialchars($job['job_type']); ?>
+                            </span>
+                        </div>
+                        <p class="text-gray-700 mb-4">
+                            <?php echo substr(htmlspecialchars($job['description']), 0, 150) . '...'; ?>
+                        </p>
+                        <a href="jobPost.php?job_id=<?php echo $job['job_id']; ?>"
+                           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                            ดูรายละเอียด
+                        </a>
+                    </div>
                 <?php endwhile; ?>
-            </ul>
+            </div>
         <?php else: ?>
-            <p>ไม่พบข้อมูลที่ตรงกับการค้นหา</p>
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <p>ไม่พบผลการค้นหา</p>
+            </div>
         <?php endif; ?>
     </div>
-</section>
-</body>
-</html>
+    </body>
+    </html>
 
 <?php
+$stmt->close();
 $conn->close();
 ?>
