@@ -28,19 +28,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $address = htmlspecialchars(trim($_POST['address']));
     $subdistrict = htmlspecialchars(trim($_POST['subdistrict']));
     $district = htmlspecialchars(trim($_POST['district']));
+    $province = htmlspecialchars(trim($_POST['province']));
     $postal_code = htmlspecialchars(trim($_POST['postal_code']));
     $user_email = filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL);
     $user_phone = htmlspecialchars(trim($_POST['user_phone']));
 
     // Validate inputs
     if (empty($first_name) || empty($last_name) || empty($birthday) ||
-        empty($address) || empty($subdistrict) || empty($district) ||
+        empty($address) || empty($subdistrict) || empty($district) || empty($province) ||
         empty($postal_code) || !$user_email || empty($user_phone)) {
         $error_message = "All fields are required.";
     } else {
         // Check if any data has actually changed
         $changed = false;
-        $fields = ['first_name', 'last_name', 'birthday', 'address', 'subdistrict', 'district',
+        $fields = ['first_name', 'last_name', 'birthday', 'address', 'subdistrict', 'district', 'province',
             'postal_code', 'user_email', 'user_phone'];
 
         foreach ($fields as $field) {
@@ -58,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             address = ?, 
             subdistrict = ?, 
             district = ?, 
+            province = ?,
             postal_code = ?, 
             user_email = ?, 
             user_phone = ? 
@@ -78,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'address' => $address,
                     'subdistrict' => $subdistrict,
                     'district' => $district,
+                    'province' => $province,
                     'postal_code' => $postal_code,
                     'user_email' => $user_email,
                     'user_phone' => $user_phone
@@ -150,20 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                        value="<?php echo htmlspecialchars($user_data['user_phone']); ?>" required>
             </div>
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2">Postal Code</label>
-                <input type="text" name="postal_code"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="zipcode"
-                       value="<?php echo htmlspecialchars($user_data['postal_code']); ?>" required>
-            </div>
-        </div>
 
-        <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Address</label>
-            <textarea name="address" rows="3"
-                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      required><?php echo htmlspecialchars($user_data['address']); ?></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
@@ -178,10 +168,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label class="block text-gray-700 text-sm font-bold mb-2">District</label>
                 <input type="text" name="district"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="province"
+                       id="district"
                        value="<?php echo htmlspecialchars($user_data['district']); ?>" required>
             </div>
         </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Province</label>
+                <input type="text" name="province"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="province"
+                       value="<?php echo htmlspecialchars($user_data['province'] ?? ''); ?>" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Postal Code</label>
+                <input type="text" name="postal_code"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="zipcode"
+                       value="<?php echo htmlspecialchars($user_data['postal_code']); ?>" required>
+            </div>
+        </div>
+
 
         <div class="flex items-center justify-center">
             <button type="submit"
