@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'databaseConnect.php';
+include('navbar.php');
 
 // Sanitize and process search inputs
 $keyword = $_GET['keyword'] ?? '';
@@ -37,6 +38,7 @@ $result = $conn->query($sql);
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body class="bg-gray-100">
+    <?php generateNavbar(); ?>
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-2xl font-bold mb-6">ผลการค้นหางาน</h1>
 
