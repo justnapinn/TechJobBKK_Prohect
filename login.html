@@ -9,6 +9,7 @@
         body {
             background-color: #f1d4a2;
         }
+
         .login-container {
             max-width: 400px;
             margin: 50px auto;
@@ -17,60 +18,66 @@
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .login-container h2 {
             margin-bottom: 20px;
             font-weight: bold;
             color: #343a40;
             text-align: center;
         }
+
         .login-container .btn {
             width: 100%;
             background-color: #007bff;
             color: white;
         }
+
         .login-container .btn:hover {
             background-color: #0056b3;
         }
+
         .login-container p {
             text-align: center;
         }
+
         .login-container a {
             color: #007bff;
             text-decoration: none;
         }
+
         .login-container a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form action="login.php" method="POST">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username:</label>
-                <input type="text" name="username" id="username" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" name="password" id="password" class="form-control" required>
-            </div>
-            <div class="d-grid">
-                <button type="submit" class="btn">Login</button>
-            </div>
-            <div class="mt-3">
-                <p>Don't have an account? <a href="register.html">Register here</a></p>
-            </div>
-        </form>
-    </div>
+<div class="login-container">
+    <h2>Login</h2>
+    <form action="login.php" method="POST">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" name="username" id="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn">Login</button>
+        </div>
+        <div class="mt-3">
+            <p>Don't have an account? <a href="register.php">Register here</a></p>
+        </div>
+    </form>
+</div>
 
-    <script>
-        // check parameter "error" in URL 
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('error')) {
-            const errorMessage = urlParams.get('error');
-            alert(errorMessage); // show alert
-        }
-    </script>
+<script>
+    // check parameter "error" in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+        const errorMessage = urlParams.get('error');
+        alert(errorMessage); // show alert
+    }
+</script>
 </body>
 </html>
