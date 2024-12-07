@@ -20,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_type'] = $user['user_type'];
 
             if ($user['user_type'] == 'admin') {
-                header("Location: index.html");  // go to dashboard for admin
+                header("Location: index.php");  // go to dashboard for admin
             } elseif ($user['user_type'] == 'applicant') {
-                header("Location: profile.php"); // go to dashboard for applicant
+                header("Location:  index.php"); // go to dashboard for applicant
             } elseif ($user['user_type'] == 'company') {
-                header("Location: index.html"); // go to dashboard for company
+                header("Location: index.php"); // go to dashboard for company
             }
             exit();
         } else {
