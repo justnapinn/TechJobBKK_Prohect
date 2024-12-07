@@ -54,50 +54,32 @@
         <h2>Register to TechJobBKK</h2>
         <form method="POST" action="register.php">
             <div class="mb-3">
-                <label for="user_type" class="form-label">Type:</label>
+                <label for="user_type" class="form-label">User Type:</label>
                 <select name="user_type" id="user_type" class="form-select" required>
                     <option value="1">Applicant</option>
                     <option value="2">Company</option>
                 </select>
             </div>
-        
             <div class="mb-3">
                 <label for="username" class="form-label">Username:</label>
                 <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
             </div>
-        
             <div class="mb-3">
                 <label for="password" class="form-label">Password:</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
             </div>
-        
-            <!-- Applicant Fields  -->
-            <div id="applicant-fields">
-                <div class="mb-3">
-                    <label for="first_name" class="form-label">First Name:</label>
-                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name" required>
-                </div>
-                <div class="mb-3">
-                    <label for="last_name" class="form-label">Last Name:</label>
-                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" required>
-                </div>
-                <div class="mb-3">
-                    <label for="birthday" class="form-label">Birthday:</label>
-                    <input type="date" name="birthday" id="birthday" class="form-control" required>
-                </div>
+            <div class="mb-3">
+                <label for="first_name" class="form-label">First Name or Company Name:</label>
+                <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name or Company Name" required>
             </div>
-
-        
-            <!-- Company Field -->
-            <div id="company-fields" class="d-none">
-                <div class="mb-3">
-                    <label for="company_name" class="form-label">Company Name:</label>
-                    <input type="text" name="first_name" id="company_name" class="form-control" placeholder="Company Name" required>
-                </div>
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Last Name:</label>
+                <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" >
             </div>
-        
-            <!-- Others Fields -->
-        
+            <div class="mb-3">
+                <label for="birthday" class="form-label">Birthday:</label>
+                <input type="date" name="birthday" id="birthday" class="form-control" required>
+            </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Address:</label>
                 <input type="text" name="address" id="address" class="form-control" placeholder="Address" required>
@@ -126,34 +108,22 @@
                 <label for="user_phone" class="form-label">Phone:</label>
                 <input type="text" name="user_phone" id="user_phone" class="form-control" placeholder="Phone" required>
             </div>
-        
+            
             <div class="d-grid">
                 <button type="submit" class="btn">Register</button>
             </div>
             <p>Already have an account? <a href="login.html">Login here</a></p>
         </form>
-        
     </div>
 
     <script>
-        const userTypeField = document.getElementById('user_type');
-        const applicantFields = document.getElementById('applicant-fields');
-        const companyFields = document.getElementById('company-fields');
-
-        // Event listener to toggle form fields based on user type
-        userTypeField.addEventListener('change', function () {
-            if (this.value === '1') {
-                applicantFields.classList.remove('d-none');
-                companyFields.classList.add('d-none');
-                document.getElementById('first_name').required = true;
-                document.getElementById('last_name').required = true;
-            } else if (this.value === '2') {
-                applicantFields.classList.add('d-none');
-                companyFields.classList.remove('d-none');
-                document.getElementById('first_name').required = true; // For company name
-                document.getElementById('last_name').required = false;
-            }
-        });
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            alert(decodeURIComponent(urlParams.get('error'))); // show error message
+        }
+        if (urlParams.has('success')) {
+            alert(decodeURIComponent(urlParams.get('success'))); // show success message
+        }
     </script>
 </body>
 </html>
