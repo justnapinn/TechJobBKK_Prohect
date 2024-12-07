@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require 'databaseConnect.php';
 
@@ -35,28 +34,28 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ผลการค้นหา - TechJobBKK</title>
-    <link rel="stylesheet" href="styleHomepage.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <section class="results-section">
-        <div class="container">
-            <h1>ผลการค้นหา</h1>
-            <?php if ($result->num_rows > 0): ?>
-                <ul class="company-list">
-                    <?php while($row = $result->fetch_assoc()): ?>
-                        <li class="company-item">
-                            <h2><?php echo $row['company_name']; ?></h2>
-                            <p>ตำแหน่งงาน: <?php echo $row['job_title']; ?></p>
-                            <p>สถานที่: <?php echo $row['location']; ?></p>
-                            <p>ประเภทงาน: <?php echo $row['job_type']; ?></p>
-                        </li>
-                    <?php endwhile; ?>
-                </ul>
-            <?php else: ?>
-                <p>ไม่พบข้อมูลที่ตรงกับการค้นหา</p>
-            <?php endif; ?>
-        </div>
-    </section>
+<section class="results-section">
+    <div class="container">
+        <h1>ผลการค้นหา</h1>
+        <?php if ($result->num_rows > 0): ?>
+            <ul class="company-list">
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <li class="company-item">
+                        <h2><?php echo $row['company_name']; ?></h2>
+                        <p>ตำแหน่งงาน: <?php echo $row['job_title']; ?></p>
+                        <p>สถานที่: <?php echo $row['location']; ?></p>
+                        <p>ประเภทงาน: <?php echo $row['job_type']; ?></p>
+                    </li>
+                <?php endwhile; ?>
+            </ul>
+        <?php else: ?>
+            <p>ไม่พบข้อมูลที่ตรงกับการค้นหา</p>
+        <?php endif; ?>
+    </div>
+</section>
 </body>
 </html>
 
