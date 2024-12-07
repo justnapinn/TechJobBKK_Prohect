@@ -32,7 +32,7 @@
 
 <h2 style="text-align: center;">Apply for a Job</h2>
 
-<form action="uploadCv.php" method="POST" enctype="multipart/form-data">
+<form action="uploadCV.php" method="POST" enctype="multipart/form-data">
     <input type="text" name="name" placeholder="Your Name" required>
     <input type="email" name="email" placeholder="Your Email" required>
     <input type="file" name="cv" accept=".pdf,.doc,.docx" required>
