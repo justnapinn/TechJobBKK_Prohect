@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($user['user_type'] == 'admin') {
                 header("Location: index.html");  // go to dashboard for admin
             } elseif ($user['user_type'] == 'applicant') {
-                header("Location: index.html"); // go to dashboard for applicant
+                header("Location: profile.php"); // go to dashboard for applicant
             } elseif ($user['user_type'] == 'company') {
                 header("Location: index.html"); // go to dashboard for company
             }
