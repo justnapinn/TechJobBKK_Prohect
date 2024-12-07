@@ -8,7 +8,7 @@ function generateNavbar(): void
         echo '
         <nav class="bg-blue-500 text-white py-4">
             <div class="container mx-auto px-4 flex justify-between items-center">
-                <a href="index.html" class="text-2xl font-bold">TechJobBkk</a>
+                <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
                 <div class="space-x-4">
                     <a href="profile.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">Profile</a>
                     <a href="logout.php" class="text-black hover:bg-white-700 bg-white-600 px-3 py-2 rounded">Logout</a>
@@ -20,7 +20,7 @@ function generateNavbar(): void
         echo '
         <nav class="bg-blue-500 text-white py-4">
             <div class="container mx-auto flex justify-between items-center">
-               <a href="index.html" class="text-2xl font-bold">TechJobBkk</a>
+               <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
                <ul class="flex gap-4">
                <li><a href="#">หางาน</a></li>
                <li><a href="register.html">สมัครสมาชิก</a></li>
