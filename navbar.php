@@ -12,6 +12,7 @@ function generateNavbar(): void
                     <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
                     <div class="space-x-4">
                     <a href="createPost.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">Post</a>
+                    <a href="applicants.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">Applicants</a>
                        <a href="profile.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">Profile</a>
                         <a href="logout.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">Logout</a>
                     </div>
