@@ -38,7 +38,7 @@ function generateNavbar(): void
             <div class="container mx-auto flex justify-between items-center">
                <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
                <ul class="flex gap-4">
-               <li><a href="#">หางาน</a></li>
+               <li><a href="index.php">หางาน</a></li>
                <li><a href="register.php">สมัครสมาชิก</a></li>
                <li><a href="login.php">เข้าสู่ระบบ</a></li>
                </ul>
