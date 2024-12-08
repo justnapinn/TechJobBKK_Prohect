@@ -8,7 +8,7 @@ $keyword = $_GET['keyword'] ?? '';
 $job_type = $_GET['job-type'] ?? '';
 
 // Build the SQL query based on the search parameters
-$sql = "SELECT j.*, u.first_name
+$sql = "SELECT j.*, u.first_name, u.logo
         FROM jobs j
         INNER JOIN users u ON j.user_id = u.user_id";
 
@@ -48,11 +48,11 @@ $result = $conn->query($sql);
                 <?php while ($row = $result->fetch_assoc()) { ?>
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex items-center mb-4">
-                            <!--                            --><?php //if (!empty($job['logo'])): ?>
-                            <!--                                <img src="-->
-                            <?php //echo htmlspecialchars($job['logo']); ?><!--" alt="Company Logo"-->
-                            <!--                                     class="w-16 h-16 mr-4 rounded-full">-->
-                            <!--                            --><?php //endif; ?>
+                            <?php if (!empty($row['logo'])): ?>
+                                <img src="
+                            <?php echo htmlspecialchars($row['logo']); ?>" alt="Company Logo"
+                                     class="w-16 h-16 mr-4 rounded-full">
+                            <?php endif; ?>
                             <h2 class="text-xl font-semibold"><?php echo htmlspecialchars($row['title']); ?></h2>
                         </div>
                         <p class="text-gray-600 mb-2">

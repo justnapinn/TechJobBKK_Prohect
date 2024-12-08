@@ -39,8 +39,9 @@ function generateNavbar(): void
                <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
                <ul class="flex gap-4">
                <li><a href="index.php">หางาน</a></li>
-               <li><a href="register.php">สมัครสมาชิก</a></li>
+               <li><a href="registerApp.php">สมัครสมาชิก</a></li>
                <li><a href="login.php">เข้าสู่ระบบ</a></li>
+                <li><a href="registerCom.php">สมาชิกบริษัท</a></li>
                </ul>
             </div>
         </nav>';
