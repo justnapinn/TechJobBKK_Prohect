@@ -21,8 +21,6 @@ if (empty($job_id) || empty($user_id)) {
 </head>
 <body class="bg-gray-100">
 
-<?php generateNavbar(); ?>
-
 <h2 class="text-3xl font-bold text-center text-gray-800 my-8">Apply for a Job</h2>
 
 <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
@@ -31,11 +29,13 @@ if (empty($job_id) || empty($user_id)) {
 
         <div>
             <label for="cv" class="block text-lg font-semibold text-gray-700">Upload Your CV</label>
-            <input type="file" name="cv" accept=".pdf,.doc,.docx" required class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <input type="file" name="cv" accept=".pdf,.doc,.docx" required
+                   class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             <small class="text-red-500 block mt-2">Only PDF, DOC, and DOCX files are allowed.</small>
         </div>
 
-        <button type="submit" class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button type="submit"
+                class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
             Submit Application
         </button>
     </form>

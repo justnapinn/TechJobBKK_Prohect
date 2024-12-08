@@ -97,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
 </head>
 <body class="bg-[#f5d472]">
-<?php generateNavbar(); ?>
 <div class="max-w-md mx-auto mt-12 bg-white p-6 rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Register as Applicant</h2>
     <form action="registerApp.php" method="POST">
@@ -106,126 +105,126 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="mb-4">
             <label for="username" class="block text-gray-700 font-medium mb-2">Username:</label>
             <input
-                type="text"
-                name="username"
-                id="username"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="username"
+                    id="username"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="password" class="block text-gray-700 font-medium mb-2">Password:</label>
             <input
-                type="password"
-                name="password"
-                id="password"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="password"
+                    name="password"
+                    id="password"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="first_name" class="block text-gray-700 font-medium mb-2">First Name:</label>
             <input
-                type="text"
-                name="first_name"
-                id="first_name"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="first_name"
+                    id="first_name"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="last_name" class="block text-gray-700 font-medium mb-2">Last Name:</label>
             <input
-                type="text"
-                name="last_name"
-                id="last_name"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="last_name"
+                    id="last_name"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="user_email" class="block text-gray-700 font-medium mb-2">Email:</label>
             <input
-                type="email"
-                name="user_email"
-                id="user_email"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="email"
+                    name="user_email"
+                    id="user_email"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="user_phone" class="block text-gray-700 font-medium mb-2">Phone:</label>
             <input
-                type="text"
-                name="user_phone"
-                id="user_phone"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="user_phone"
+                    id="user_phone"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="birthday" class="block text-gray-700 font-medium mb-2">Birthday:</label>
             <input
-                type="date"
-                name="birthday"
-                id="birthday"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="date"
+                    name="birthday"
+                    id="birthday"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="address" class="block text-gray-700 font-medium mb-2">Address:</label>
             <input
-                type="text"
-                name="address"
-                id="address"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="address"
+                    id="address"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="subdistrict" class="block text-gray-700 font-medium mb-2">Subdistrict:</label>
             <input
-                type="text"
-                name="subdistrict"
-                id="district"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="subdistrict"
+                    id="district"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="district" class="block text-gray-700 font-medium mb-2">District:</label>
             <input
-                type="text"
-                name="district"
-                id="amphoe"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="district"
+                    id="amphoe"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="province" class="block text-gray-700 font-medium mb-2">Province:</label>
             <input
-                type="text"
-                name="province"
-                id="province"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="province"
+                    id="province"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
         <div class="mb-4">
             <label for="postal_code" class="block text-gray-700 font-medium mb-2">Postal Code:</label>
             <input
-                type="text"
-                name="postal_code"
-                id="zipcode"
-                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required>
+                    type="text"
+                    name="postal_code"
+                    id="zipcode"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
         </div>
 
         <button
-            type="submit"
-            class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                type="submit"
+                class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
             Register
         </button>
     </form>
 </div>
-    <script>
-        $.Thailand({
-            $district: $('#district'), 
-            $amphoe: $('#amphoe'), 
-            $province: $('#province'), 
-            $zipcode: $('#zipcode'), 
-        });
-    </script>
+<script>
+    $.Thailand({
+        $district: $('#district'),
+        $amphoe: $('#amphoe'),
+        $province: $('#province'),
+        $zipcode: $('#zipcode'),
+    });
+</script>
 </body>
 </html>

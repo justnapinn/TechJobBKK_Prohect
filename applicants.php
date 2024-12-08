@@ -64,7 +64,6 @@ $result = $stmt->get_result();
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
-<?php generateNavbar(); ?>
 <div class="container mx-auto py-8">
     <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Applicants</h1>
 

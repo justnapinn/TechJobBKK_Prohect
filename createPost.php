@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
-<?php generateNavbar(); ?>
 <div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-center">Create Job Post</h2>
 

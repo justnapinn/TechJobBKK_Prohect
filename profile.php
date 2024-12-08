@@ -27,7 +27,6 @@ $user_data = $result->fetch_assoc();
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen items-center justify-center">
-<?php generateNavbar(); ?>
 <div class="w-full fixed top-[60px] bg-white p-8 shadow-md z-10">
     <div class="flex items-center">
         <div class="mr-4">

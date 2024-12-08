@@ -43,48 +43,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: jobPost.php?job_id=" . urlencode($job_id) . "&status=alreadyAppliedModal");
         exit();  // หยุดการทำงานเพื่อป้องกันการสมัครซ้ำ
     }
-    
+
     // เตรียมการอัพโหลดไฟล์
     $target_dir = "uploads/CV/";  // เปลี่ยนเป็น uploads/CV/
 
 // ตรวจสอบว่าไดเรกทอรี uploads/CV/ มีอยู่หรือไม่ หากไม่มีก็จะสร้างขึ้นมา
-if (!is_dir($target_dir)) {
-    mkdir($target_dir, 0777, true);
-}
+    if (!is_dir($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
 
 // ตรวจสอบประเภทไฟล์ที่อัพโหลด
-$fileType = strtolower(pathinfo($_FILES["cv"]["name"], PATHINFO_EXTENSION));
-$filename = uniqid() . '.' . $fileType;  // สร้างชื่อไฟล์ใหม่ที่ไม่ซ้ำกัน
-$cv_file = $target_dir . $filename;  // ตั้งค่าที่อยู่ของไฟล์ที่อัพโหลด
+    $fileType = strtolower(pathinfo($_FILES["cv"]["name"], PATHINFO_EXTENSION));
+    $filename = uniqid() . '.' . $fileType;  // สร้างชื่อไฟล์ใหม่ที่ไม่ซ้ำกัน
+    $cv_file = $target_dir . $filename;  // ตั้งค่าที่อยู่ของไฟล์ที่อัพโหลด
 
 // ตรวจสอบประเภทไฟล์ที่อนุญาต (PDF, DOC, DOCX)
-if (!in_array($fileType, ['pdf', 'doc', 'docx'])) {
-    die("Only PDF, DOC, and DOCX files are allowed.");
-}
+    if (!in_array($fileType, ['pdf', 'doc', 'docx'])) {
+        die("Only PDF, DOC, and DOCX files are allowed.");
+    }
 
 // อัพโหลดไฟล์
-if (move_uploaded_file($_FILES["cv"]["tmp_name"], $cv_file)) {
-    // ตั้งค่าเวลาในการสมัคร
-    $applied_at = date('Y-m-d H:i:s');
-    $app_id = uniqid();  // สร้าง ID สำหรับการสมัคร
-    $status = 'pending';  // กำหนดสถานะเริ่มต้นเป็น 'pending'
+    if (move_uploaded_file($_FILES["cv"]["tmp_name"], $cv_file)) {
+        // ตั้งค่าเวลาในการสมัคร
+        $applied_at = date('Y-m-d H:i:s');
+        $app_id = uniqid();  // สร้าง ID สำหรับการสมัคร
+        $status = 'pending';  // กำหนดสถานะเริ่มต้นเป็น 'pending'
 
-    // ทำการแทรกข้อมูลลงในตาราง applications
-    $sql = "INSERT INTO applications (resume, app_id, user_id, job_id, applied_at, status) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssss", $cv_file, $app_id, $user_id, $job_id, $applied_at, $status);  // ใช้ 's' สำหรับ VARCHAR
+        // ทำการแทรกข้อมูลลงในตาราง applications
+        $sql = "INSERT INTO applications (resume, app_id, user_id, job_id, applied_at, status) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssssss", $cv_file, $app_id, $user_id, $job_id, $applied_at, $status);  // ใช้ 's' สำหรับ VARCHAR
 
-    // ตรวจสอบการแทรกข้อมูล
-    if ($stmt->execute()) {
-        // เมื่อการสมัครสำเร็จ, เปลี่ยนหน้าไปยัง jobPost พร้อมกับการแจ้งว่าสำเร็จ
-        header("Location: jobPost.php?job_id=" . urlencode($job_id) . "&status=success");
-        exit(); // ไม่ลืม exit เพื่อให้การดำเนินการหยุด
-    } else {
-        // ถ้ามีข้อผิดพลาด, เปลี่ยนหน้าไปยัง jobPost พร้อมกับการแจ้งข้อผิดพลาด
-        header("Location: jobPost.php?job_id=" . urlencode($job_id) . "&status=error");
-        exit();
+        // ตรวจสอบการแทรกข้อมูล
+        if ($stmt->execute()) {
+            // เมื่อการสมัครสำเร็จ, เปลี่ยนหน้าไปยัง jobPost พร้อมกับการแจ้งว่าสำเร็จ
+            header("Location: jobPost.php?job_id=" . urlencode($job_id) . "&status=success");
+            exit(); // ไม่ลืม exit เพื่อให้การดำเนินการหยุด
+        } else {
+            // ถ้ามีข้อผิดพลาด, เปลี่ยนหน้าไปยัง jobPost พร้อมกับการแจ้งข้อผิดพลาด
+            header("Location: jobPost.php?job_id=" . urlencode($job_id) . "&status=error");
+            exit();
+        }
     }
-}
 }
 $conn->close();
 ?>

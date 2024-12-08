@@ -13,17 +13,16 @@ include('navbar.php');
 </head>
 
 <body class="font-sans text-gray-700 bg-gray-100">
-<?php generateNavbar(); ?>
 <section class="search-section bg-blue-500 text-black py-8">
     <div class="container mx-auto max-w-lg bg-white p-6 rounded-lg shadow-md">
         <form class="space-y-4" action="result.php" method="GET">
-<!--            <div>-->
-<!--                <label for="location" class="block font-bold mb-2">สถานที่ปฏิบัติงาน</label>-->
-<!--                <select id="location" class="w-full border rounded-md p-2">-->
-<!--                    <option value="all">ทั้งหมด</option>-->
-<!--                    <option value="bangkok">กรุงเทพฯ</option>-->
-<!--                </select>-->
-<!--            </div>-->
+            <!--            <div>-->
+            <!--                <label for="location" class="block font-bold mb-2">สถานที่ปฏิบัติงาน</label>-->
+            <!--                <select id="location" class="w-full border rounded-md p-2">-->
+            <!--                    <option value="all">ทั้งหมด</option>-->
+            <!--                    <option value="bangkok">กรุงเทพฯ</option>-->
+            <!--                </select>-->
+            <!--            </div>-->
 
             <div>
                 <label for="keyword" class="block font-bold mb-2">คำที่ต้องการค้นหา</label>

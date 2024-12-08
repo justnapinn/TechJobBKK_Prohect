@@ -1,12 +1,9 @@
 <?php
-// session_start();
 
-function generateNavbar(): void
-{
-    if (isset($_SESSION['user_id'])) {
-        if ($_SESSION['user_type'] == 'company') {
-            // Company navbar
-            echo '
+if (isset($_SESSION['user_id'])) {
+    if ($_SESSION['user_type'] == 'company') {
+        // Company navbar
+        echo '
             <nav class="bg-blue-500 text-white py-4">
                 <div class="container mx-auto px-4 flex justify-between items-center">
                     <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
@@ -18,10 +15,10 @@ function generateNavbar(): void
                     </div>
                 </div>
             </nav>';
-            return;
-        } else {
-            // Applicants navbar
-            echo '
+        return;
+    } else {
+        // Applicants navbar
+        echo '
         <nav class="bg-blue-500 text-white py-4">
             <div class="container mx-auto px-4 flex justify-between items-center">
                 <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
@@ -31,10 +28,10 @@ function generateNavbar(): void
                 </div>
             </div>
         </nav>';
-        }
-    } else {
-        // Not logged-in navbar
-        echo '
+    }
+} else {
+    // Not logged-in navbar
+    echo '
         <nav class="bg-blue-500 text-white py-4">
             <div class="container mx-auto flex justify-between items-center">
                <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
@@ -46,7 +43,7 @@ function generateNavbar(): void
                </ul>
             </div>
         </nav>';
-    }
 }
+
 
 ?>
