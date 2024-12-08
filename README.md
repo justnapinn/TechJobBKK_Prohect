@@ -4,8 +4,8 @@
 3.  - [ ] Register - Kla 
     - Applicants
     - Company
-4.  - [ ] Job post (each one) - 1st  
+4.  - [x] Job post (each one) - 1st  
 5.  - [x] Profile editing - Japan
-6.  - [ ] Submit CV - 1st
+6.  - [x] Submit CV - 1st
 7.  - [x] Create post - Japan
 8. - [ ] Applicants - Pukao
