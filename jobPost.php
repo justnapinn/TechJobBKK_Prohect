@@ -82,22 +82,41 @@
 session_start();
 require 'databaseConnect.php';
 
-$sql_company = "SELECT first_name FROM users WHERE user_id = '1'";
-$result_company = $conn->query($sql_company);
-$row_company = $result_company->fetch_assoc();
+$job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
 
-// แสดงชื่อบริษัทใน Header
-echo "<h1>" . htmlspecialchars($row_company["first_name"]) . "</h1>";
+if (!isset($_SESSION['user_id'])) {
+    die("User not logged in. Please log in first.");
+}
 
-$sql = "SELECT j.job_id, j.title, j.description, u.first_name , j.welfare , j.contact
+$user_id = $_SESSION['user_id'];
+
+$sql_company = "SELECT j.job_id, u.first_name
+                FROM jobs j
+                INNER JOIN users u ON j.user_id = u.user_id
+                WHERE j.job_id = ?";
+$stmt = $conn->prepare($sql_company);
+$stmt->bind_param("s", $job_id);
+$stmt->execute();
+$result_company = $stmt->get_result();
+if ($result_company->num_rows > 0) {
+    $row_company = $result_company->fetch_assoc();
+    echo "<h1>" . htmlspecialchars($row_company["first_name"]) . "</h1>";
+} else {
+    echo "<h1>ไม่พบข้อมูลบริษัท</h1>";
+}
+
+$sql = "SELECT j.job_id, j.title, j.description, u.first_name, j.welfare, j.contact
         FROM jobs j
         INNER JOIN users u ON j.user_id = u.user_id
-        WHERE j.job_id = '1'";
-$result = $conn->query($sql);
+        WHERE j.job_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $job_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     echo "<div class='job-container'>";
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         echo "<div class='job-section'>";
         echo "<h3>Job Title</h3>";
         echo "<p>" . nl2br(htmlspecialchars($row["title"])) . "</p>";
@@ -118,7 +137,7 @@ if ($result->num_rows > 0) {
         echo "<p>" . nl2br(htmlspecialchars($row["contact"])) . "</p>";
         echo "</div>";
     }
-    echo "<a href='apply.php' class='apply-button'>Apply</a>";
+    echo "<a href='apply.php?job_id=" . urlencode($job_id) . "&user_id=" . urlencode($_SESSION['user_id']) . "' class='apply-button'>Apply</a>";
     echo "</div>";
 } else {
     echo "<p>Not Found</p>";
