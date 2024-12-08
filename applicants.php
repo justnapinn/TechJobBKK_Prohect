@@ -3,16 +3,31 @@ session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
 
-// Check if the user is logged in and has 'company' user_type
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
     header("Location: login.php");
     exit();
 }
 
-// Get the current logged-in company's user ID
 $company_id = $_SESSION['user_id'];
 
-// Fetch applications for jobs created by the current company
+// Handle status update if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
+    $app_id = $_POST['app_id'];
+    $new_status = $_POST['status'];
+
+    $update_sql = "UPDATE applications SET status = ? WHERE app_id = ?";
+    $update_stmt = $conn->prepare($update_sql);
+    $update_stmt->bind_param('ss', $new_status, $app_id);
+
+    if ($update_stmt->execute()) {
+        $message = "Application status updated successfully!";
+    } else {
+        $message = "Error updating status: " . $conn->error;
+    }
+    $update_stmt->close();
+}
+
+// Fetch applications
 $sql = "
     SELECT 
         a.app_id,
@@ -48,10 +63,13 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Applicants</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Optional CSS file -->
+    <link rel="stylesheet" href="styles.css"> <!-- Optional CSS -->
 </head>
 <body>
 <h1>Applicants</h1>
+<?php if (isset($message)): ?>
+    <p><?= htmlspecialchars($message) ?></p>
+<?php endif; ?>
 <table border="1">
     <thead>
     <tr>
@@ -63,6 +81,7 @@ $result = $stmt->get_result();
         <th>Resume</th>
         <th>Applied At</th>
         <th>Status</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -76,6 +95,21 @@ $result = $stmt->get_result();
             <td><a href="<?= htmlspecialchars($row['resume']) ?>" target="_blank">View Resume</a></td>
             <td><?= htmlspecialchars($row['applied_at']) ?></td>
             <td><?= htmlspecialchars($row['status']) ?></td>
+            <td>
+                <form method="POST" action="">
+                    <input type="hidden" name="app_id" value="<?= htmlspecialchars($row['app_id']) ?>">
+                    <select name="status" required>
+                        <option value="pending" <?= $row['status'] === 'pending' ? 'selected' : '' ?>>Pending</option>
+                        <option value="reviewed" <?= $row['status'] === 'reviewed' ? 'selected' : '' ?>>Reviewed
+                        </option>
+                        <option value="rejected" <?= $row['status'] === 'rejected' ? 'selected' : '' ?>>Rejected
+                        </option>
+                        <option value="accepted" <?= $row['status'] === 'accepted' ? 'selected' : '' ?>>Accepted
+                        </option>
+                    </select>
+                    <button type="submit" name="update_status">Update</button>
+                </form>
+            </td>
         </tr>
     <?php endwhile; ?>
     </tbody>
