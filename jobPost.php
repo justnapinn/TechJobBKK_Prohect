@@ -90,6 +90,10 @@ if (!empty($job_id)) {
 } else {
     echo "<p class='text-center text-xl text-gray-700'>ไม่พบ job_id ที่ระบุ</p>";
 }
+echo "<div class='flex justify-center mt-6'>";
+echo "<a href='apply.php?job_id=" . urlencode($job_id) . "&user_id=" . urlencode($_SESSION['user_id']) . "' class='inline-block bg-blue-600 text-white py-3 px-8 rounded-lg text-center hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300'>Apply</a>";
+echo "</div>";
+
 
 $conn->close();
 ?>
