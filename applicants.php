@@ -10,7 +10,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
 
 $company_id = $_SESSION['user_id'];
 
-// Handle status update if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     $app_id = $_POST['app_id'];
     $new_status = $_POST['status'];
@@ -27,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     $update_stmt->close();
 }
 
-// Fetch applications
 $sql = "
     SELECT 
         a.app_id,
@@ -65,56 +63,72 @@ $result = $stmt->get_result();
     <title>Applicants</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen font-sans">
 <?php generateNavbar(); ?>
-<h1>Applicants</h1>
-<?php if (isset($message)): ?>
-    <p><?= htmlspecialchars($message) ?></p>
-<?php endif; ?>
-<table border="1">
-    <thead>
-    <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Age</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Resume</th>
-        <th>Applied At</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php while ($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?= htmlspecialchars($row['first_name']) ?></td>
-            <td><?= htmlspecialchars($row['last_name']) ?></td>
-            <td><?= htmlspecialchars($row['age']) ?></td>
-            <td><?= htmlspecialchars($row['user_email']) ?></td>
-            <td><?= htmlspecialchars($row['user_phone']) ?></td>
-            <td><a href="<?= htmlspecialchars($row['resume']) ?>" target="_blank">View Resume</a></td>
-            <td><?= htmlspecialchars($row['applied_at']) ?></td>
-            <td><?= htmlspecialchars($row['status']) ?></td>
-            <td>
-                <form method="POST" action="">
-                    <input type="hidden" name="app_id" value="<?= htmlspecialchars($row['app_id']) ?>">
-                    <select name="status" required>
-                        <option value="pending" <?= $row['status'] === 'pending' ? 'selected' : '' ?>>Pending</option>
-                        <option value="reviewed" <?= $row['status'] === 'reviewed' ? 'selected' : '' ?>>Reviewed
-                        </option>
-                        <option value="rejected" <?= $row['status'] === 'rejected' ? 'selected' : '' ?>>Rejected
-                        </option>
-                        <option value="accepted" <?= $row['status'] === 'accepted' ? 'selected' : '' ?>>Accepted
-                        </option>
-                    </select>
-                    <button type="submit" name="update_status">Update</button>
-                </form>
-            </td>
-        </tr>
-    <?php endwhile; ?>
-    </tbody>
-</table>
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Applicants</h1>
+
+    <?php if (isset($message)): ?>
+        <div class="bg-blue-100 text-blue-800 border border-blue-200 rounded-md p-4 mb-6">
+            <?= htmlspecialchars($message) ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+        <table class="min-w-full bg-white">
+            <thead>
+            <tr class="bg-gray-200 text-gray-600 text-sm uppercase font-semibold">
+                <th class="py-3 px-6 text-left">First Name</th>
+                <th class="py-3 px-6 text-left">Last Name</th>
+                <th class="py-3 px-6 text-left">Age</th>
+                <th class="py-3 px-6 text-left">Email</th>
+                <th class="py-3 px-6 text-left">Phone</th>
+                <th class="py-3 px-6 text-left">Resume</th>
+                <th class="py-3 px-6 text-left">Applied At</th>
+                <th class="py-3 px-6 text-left">Status</th>
+                <th class="py-3 px-6 text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody class="text-gray-700 text-sm">
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3 px-6"><?= htmlspecialchars($row['first_name']) ?></td>
+                    <td class="py-3 px-6"><?= htmlspecialchars($row['last_name']) ?></td>
+                    <td class="py-3 px-6"><?= htmlspecialchars($row['age']) ?></td>
+                    <td class="py-3 px-6"><?= htmlspecialchars($row['user_email']) ?></td>
+                    <td class="py-3 px-6"><?= htmlspecialchars($row['user_phone']) ?></td>
+                    <td class="py-3 px-6"><a href="<?= htmlspecialchars($row['resume']) ?>"
+                                             class="text-blue-600 underline" target="_blank">View Resume</a></td>
+                    <td class="py-3 px-6"><?= htmlspecialchars($row['applied_at']) ?></td>
+                    <td class="py-3 px-6"><?= htmlspecialchars($row['status']) ?></td>
+                    <td class="py-3 px-6 text-center">
+                        <form method="POST" action="" class="inline">
+                            <input type="hidden" name="app_id" value="<?= htmlspecialchars($row['app_id']) ?>">
+                            <select name="status" class="border rounded-md px-2 py-1">
+                                <option value="pending" <?= $row['status'] === 'pending' ? 'selected' : '' ?>>Pending
+                                </option>
+                                <option value="reviewed" <?= $row['status'] === 'reviewed' ? 'selected' : '' ?>>
+                                    Reviewed
+                                </option>
+                                <option value="rejected" <?= $row['status'] === 'rejected' ? 'selected' : '' ?>>
+                                    Rejected
+                                </option>
+                                <option value="accepted" <?= $row['status'] === 'accepted' ? 'selected' : '' ?>>
+                                    Accepted
+                                </option>
+                            </select>
+                            <button type="submit" name="update_status"
+                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                Update
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>
 
