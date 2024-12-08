@@ -2,6 +2,11 @@
 session_start();
 require 'databaseConnect.php';
 include('navbar.php');
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();}
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +34,8 @@ include('navbar.php');
     </script>
 </head>
 <body class="bg-gray-100">
+
+
 
 <?php generateNavbar(); ?>
 
@@ -68,9 +75,6 @@ include('navbar.php');
 <?php
 $job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
 
-if (!isset($_SESSION['user_id'])) {
-    die("User not logged in. Please log in first.");
-}
 
 $user_id = $_SESSION['user_id'];
 
