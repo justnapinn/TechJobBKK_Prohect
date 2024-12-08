@@ -81,7 +81,6 @@
 <?php
 session_start();
 require 'databaseConnect.php';
-
 $job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
 
 if (!isset($_SESSION['user_id'])) {
