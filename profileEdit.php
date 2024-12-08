@@ -44,8 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!preg_match('/^[0-9]{10}$/', $user_phone)) $errors[] = "Invalid phone number.";
 
     $upload_dir = 'uploads/logos/';
-    $logo_path = $user_data['logos']; // Default to the existing logos path
-
+    $logo_path = $user_data['logo']; // Use the existing logo path as default
 
     if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == UPLOAD_ERR_OK) {
         $file_tmp = $_FILES['profile_picture']['tmp_name'];
@@ -54,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
 
         if (in_array($file_ext, $allowed_extensions)) {
+            $upload_dir = 'uploads/logos/';
             $new_file_name = $user_id . '_logo.' . $file_ext; // Unique file name
             $logo_path = $upload_dir . $new_file_name;
 
