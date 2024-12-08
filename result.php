@@ -50,7 +50,7 @@ $result = $conn->query($sql);
                         <div class="flex items-center mb-4">
                             <!--                            --><?php //if (!empty($job['logo'])): ?>
                             <!--                                <img src="-->
-                            <?php //echo htmlspecialchars($job['logo']); ?><!--" alt="Company Logo"-->
+                            <?php //echo htmlspecialchars($job['logos']); ?><!--" alt="Company Logo"-->
                             <!--                                     class="w-16 h-16 mr-4 rounded-full">-->
                             <!--                            --><?php //endif; ?>
                             <h2 class="text-xl font-semibold"><?php echo htmlspecialchars($row['title']); ?></h2>
