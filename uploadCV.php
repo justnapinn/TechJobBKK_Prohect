@@ -8,7 +8,7 @@
 <body>
 <?php
 session_start();
-
+require_once 'databaseConnect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION['user_id'];  // รับ user_id ที่เก็บใน session
@@ -44,41 +44,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // เตรียมการอัพโหลดไฟล์
-    $target_dir = "uploads/";
-    if (!is_dir($target_dir)) {
-        mkdir($target_dir, 0777, true);
-    }
+    $target_dir = "uploads/CV/";  // เปลี่ยนเป็น uploads/CV/
 
-    // ตรวจสอบประเภทไฟล์ที่อัพโหลด
-    $fileType = strtolower(pathinfo($_FILES["cv"]["name"], PATHINFO_EXTENSION));
-    $filename = uniqid() . '.' . $fileType;
-    $cv_file = $target_dir . $filename;
+// ตรวจสอบว่าไดเรกทอรี uploads/CV/ มีอยู่หรือไม่ หากไม่มีก็จะสร้างขึ้นมา
+if (!is_dir($target_dir)) {
+    mkdir($target_dir, 0777, true);
+}
 
-    if (!in_array($fileType, ['pdf', 'doc', 'docx'])) {
-        die("Only PDF, DOC, and DOCX files are allowed.");
-    }
+// ตรวจสอบประเภทไฟล์ที่อัพโหลด
+$fileType = strtolower(pathinfo($_FILES["cv"]["name"], PATHINFO_EXTENSION));
+$filename = uniqid() . '.' . $fileType;  // สร้างชื่อไฟล์ใหม่ที่ไม่ซ้ำกัน
+$cv_file = $target_dir . $filename;  // ตั้งค่าที่อยู่ของไฟล์ที่อัพโหลด
 
-    // อัพโหลดไฟล์
-    if (move_uploaded_file($_FILES["cv"]["tmp_name"], $cv_file)) {
-        // ตั้งค่าเวลาในการสมัคร
-        $applied_at = date('Y-m-d H:i:s');
-        $app_id = uniqid();
-        $status = 'pending';
+// ตรวจสอบประเภทไฟล์ที่อนุญาต (PDF, DOC, DOCX)
+if (!in_array($fileType, ['pdf', 'doc', 'docx'])) {
+    die("Only PDF, DOC, and DOCX files are allowed.");
+}
 
-        // ทำการแทรกข้อมูลลงในตาราง applications
-        $sql = "INSERT INTO applications (resume, app_id, user_id, job_id, applied_at, status) VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssss", $cv_file, $app_id, $user_id, $job_id, $applied_at, $status);  // ใช้ 's' สำหรับ VARCHAR
+// อัพโหลดไฟล์
+if (move_uploaded_file($_FILES["cv"]["tmp_name"], $cv_file)) {
+    // ตั้งค่าเวลาในการสมัคร
+    $applied_at = date('Y-m-d H:i:s');
+    $app_id = uniqid();  // สร้าง ID สำหรับการสมัคร
+    $status = 'pending';  // กำหนดสถานะเริ่มต้นเป็น 'pending'
 
-        // ตรวจสอบการแทรกข้อมูล
-        if ($stmt->execute()) {
-            echo "Your application has been submitted successfully.";
-        } else {
-            echo "An error occurred: " . $stmt->error;
-        }
+    // ทำการแทรกข้อมูลลงในตาราง applications
+    $sql = "INSERT INTO applications (resume, app_id, user_id, job_id, applied_at, status) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssss", $cv_file, $app_id, $user_id, $job_id, $applied_at, $status);  // ใช้ 's' สำหรับ VARCHAR
+
+    // ตรวจสอบการแทรกข้อมูล
+    if ($stmt->execute()) {
+        echo "Your application has been submitted successfully.";
     } else {
-        echo "There was an error uploading your file.";
+        echo "An error occurred: " . $stmt->error;
     }
+} else {
+    echo "There was an error uploading your file.";
+}
 }
 $conn->close();
 ?>
