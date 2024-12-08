@@ -39,7 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // หากพบการสมัครงานนี้แล้ว
     if ($result_check_app->num_rows > 0) {
-        echo "<script>alert('You have already applied for this job.'); window.history.back();</script>";
+        // ถ้าผู้ใช้สมัครงานนี้ไปแล้ว ให้แสดงป๊อปอัพด้วย Tailwind
+        header("Location: jobPost.php?job_id=" . urlencode($job_id) . "&status=alreadyAppliedModal");
         exit();  // หยุดการทำงานเพื่อป้องกันการสมัครซ้ำ
     }
     
@@ -75,17 +76,17 @@ if (move_uploaded_file($_FILES["cv"]["tmp_name"], $cv_file)) {
 
     // ตรวจสอบการแทรกข้อมูล
     if ($stmt->execute()) {
-        echo "Your application has been submitted successfully.";
+        // เมื่อการสมัครสำเร็จ, เปลี่ยนหน้าไปยัง jobPost พร้อมกับการแจ้งว่าสำเร็จ
+        header("Location: jobPost.php?job_id=" . urlencode($job_id) . "&status=success");
+        exit(); // ไม่ลืม exit เพื่อให้การดำเนินการหยุด
     } else {
-        echo "An error occurred: " . $stmt->error;
+        // ถ้ามีข้อผิดพลาด, เปลี่ยนหน้าไปยัง jobPost พร้อมกับการแจ้งข้อผิดพลาด
+        header("Location: jobPost.php?job_id=" . urlencode($job_id) . "&status=error");
+        exit();
     }
-} else {
-    echo "There was an error uploading your file.";
 }
 }
 $conn->close();
 ?>
 </body>
 </html>
-
-
