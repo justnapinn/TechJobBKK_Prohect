@@ -1,5 +1,7 @@
 <?php
-require 'databaseConnect.php';
+session_start();
+require_once 'databaseConnect.php';
+include('navbar.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_type = 2;
@@ -52,19 +54,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
 
     // Insert new record
-    $stmt = $conn->prepare("INSERT INTO users (user_id, user_type, username, password, first_name, last_name, birthday, address, subdistrict, district, province, postal_code, user_email, user_phone) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("
+        INSERT INTO users 
+        (user_id, user_type, username, password, first_name, last_name, birthday, address, subdistrict, district, province, postal_code, user_email, user_phone) 
+        VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
     $stmt->bind_param("sssssssssssss", $user_type, $username, $password, $first_name, $last_name, $birthday, $address, $subdistrict, $district, $province, $postal_code, $user_email, $user_phone);
 
     if ($stmt->execute()) {
         echo "<script>
             alert('Registration completed successfully!');
-            window.location.href = 'login.html';
+            window.location.href = 'login.php';
         </script>";
     } else {
         error_log("Insert Error: " . $stmt->error);
         echo "<script>
             alert('Registration failed. Please contact support.');
-            window.location.href = 'register.php';
+            window.history.back();
         </script>";
     }
 
@@ -72,70 +78,154 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conn->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Applicant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript"
+            src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
+    <script type="text/javascript"
+            src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
+    <link rel="stylesheet"
+          href="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css">
+    <script type="text/javascript"
+            src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
 </head>
-<body>
-<div class="container mt-5">
-        <h2 class="text-center mb-4">Register as Applicant</h2>
-        <form action="registerApp.php" method="POST">
-            <input type="hidden" name="user_type" value="1"> <!-- User type for Applicant -->
+<body class="bg-[#f5d472]">
+<?php generateNavbar(); ?>
+<div class="max-w-md mx-auto mt-12 bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Register as Applicant</h2>
+    <form action="registerApp.php" method="POST">
+        <input type="hidden" name="user_type" value="2">
 
-            <div class="mb-3">
-                <label for="username" class="form-label">Username:</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="Enter your username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
-            </div>
-            <div class="mb-3">
-                <label for="first_name" class="form-label">First Name:</label>
-                <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Enter your first name" required>
-            </div>
-            <div class="mb-3">
-                <label for="last_name" class="form-label">Last Name:</label>
-                <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Enter your last name" required>
-            </div>
-            <div class="mb-3">
-                <label for="birthday" class="form-label">Birthday:</label>
-                <input type="date" name="birthday" id="birthday" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Address:</label>
-                <input type="text" name="address" id="address" class="form-control" placeholder="Enter your address" required>
-            </div>
-            <div class="mb-3">
-                <label for="subdistrict" class="form-label">Subdistrict:</label>
-                <input type="text" name="subdistrict" id="subdistrict" class="form-control" placeholder="Enter your subdistrict" required>
-            </div>
-            <div class="mb-3">
-                <label for="district" class="form-label">District:</label>
-                <input type="text" name="district" id="district" class="form-control" placeholder="Enter your district" required>
-            </div>
-            <div class="mb-3">
-                <label for="province" class="form-label">Province:</label>
-                <input type="text" name="province" id="province" class="form-control" placeholder="Enter your province" required>
-            </div>
-            <div class="mb-3">
-                <label for="postal_code" class="form-label">Postal Code:</label>
-                <input type="text" name="postal_code" id="postal_code" class="form-control" placeholder="Enter your postal code" required>
-            </div>
-            <div class="mb-3">
-                <label for="user_email" class="form-label">Email:</label>
-                <input type="email" name="user_email" id="user_email" class="form-control" placeholder="Enter your email" required>
-            </div>
-            <div class="mb-3">
-                <label for="user_phone" class="form-label">Phone:</label>
-                <input type="text" name="user_phone" id="user_phone" class="form-control" placeholder="Enter your phone number" required>
-            </div>
+        <div class="mb-4">
+            <label for="username" class="block text-gray-700 font-medium mb-2">Username:</label>
+            <input
+                type="text"
+                name="username"
+                id="username"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="password" class="block text-gray-700 font-medium mb-2">Password:</label>
+            <input
+                type="password"
+                name="password"
+                id="password"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="first_name" class="block text-gray-700 font-medium mb-2">First Name:</label>
+            <input
+                type="text"
+                name="first_name"
+                id="first_name"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="last_name" class="block text-gray-700 font-medium mb-2">Last Name:</label>
+            <input
+                type="text"
+                name="last_name"
+                id="last_name"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="user_email" class="block text-gray-700 font-medium mb-2">Email:</label>
+            <input
+                type="email"
+                name="user_email"
+                id="user_email"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="user_phone" class="block text-gray-700 font-medium mb-2">Phone:</label>
+            <input
+                type="text"
+                name="user_phone"
+                id="user_phone"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="birthday" class="block text-gray-700 font-medium mb-2">Birthday:</label>
+            <input
+                type="date"
+                name="birthday"
+                id="birthday"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="address" class="block text-gray-700 font-medium mb-2">Address:</label>
+            <input
+                type="text"
+                name="address"
+                id="address"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="subdistrict" class="block text-gray-700 font-medium mb-2">Subdistrict:</label>
+            <input
+                type="text"
+                name="subdistrict"
+                id="district"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="district" class="block text-gray-700 font-medium mb-2">District:</label>
+            <input
+                type="text"
+                name="district"
+                id="amphoe"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="province" class="block text-gray-700 font-medium mb-2">Province:</label>
+            <input
+                type="text"
+                name="province"
+                id="province"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+        <div class="mb-4">
+            <label for="postal_code" class="block text-gray-700 font-medium mb-2">Postal Code:</label>
+            <input
+                type="text"
+                name="postal_code"
+                id="zipcode"
+                class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
 
-            <button type="submit" class="btn btn-primary w-100">Register</button>
-        </form>
-    </div>
+        <button
+            type="submit"
+            class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Register
+        </button>
+    </form>
+</div>
+    <script>
+        $.Thailand({
+            $district: $('#district'), 
+            $amphoe: $('#amphoe'), 
+            $province: $('#province'), 
+            $zipcode: $('#zipcode'), 
+        });
+    </script>
 </body>
 </html>
