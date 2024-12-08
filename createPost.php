@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'databaseConnect.php';
+include('navbar.php');
 
 // Check if user is logged in or not authorized
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
@@ -16,20 +17,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = htmlspecialchars(trim($_POST['title']));
     $job_type = $_POST['job_type'];
     $description = htmlspecialchars(trim($_POST['description']));
+    $welfare = htmlspecialchars(trim($_POST['welfare']));
+    $contact = htmlspecialchars(trim($_POST['contact']));
 
-    if (empty($title) || empty($job_type) || empty($description)) {
+    if (empty($title) || empty($job_type) || empty($description) || empty($welfare) || empty($contact)) {
         $error_message = "All fields are required.";
-    } elseif (strlen($description) > 2000) {
-        $error_message = "Job description cannot exceed 2000 characters.";
+    } elseif (strlen($description) > 2000 || strlen($welfare) > 2000 || strlen($contact) > 2000) {
+        $error_message = "Text fields cannot exceed 2000 characters.";
     } else {
         $job_id = uniqid('JOB_');
 
-        $stmt = $conn->prepare("INSERT INTO jobs (job_id, user_id, title, job_type, description) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $job_id, $user_id, $title, $job_type, $description);
+        $stmt = $conn->prepare("INSERT INTO jobs (job_id, user_id, title, job_type, description, welfare, contact) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $job_id, $user_id, $title, $job_type, $description, $welfare, $contact);
 
         if ($stmt->execute()) {
             $success_message = "Job post created successfully!";
-            $title = $job_type = $description = '';
+            $title = $job_type = $description = $welfare = $contact = '';
         } else {
             $error_message = "Job post creation failed. " . $conn->error;
         }
@@ -42,8 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Create Job Post</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-<div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md">
+<body class="bg-gray-100 min-h-screen">
+<?php generateNavbar(); ?>
+<div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-center">Create Job Post</h2>
 
     <form method="POST" class="space-y-4">
@@ -71,6 +75,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <textarea name="description" rows="5"
                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       maxlength="2000" required><?php echo htmlspecialchars($description ?? ''); ?></textarea>
+            <p class="text-gray-600 text-xs italic">Maximum 2000 characters</p>
+        </div>
+
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Welfare Benefits</label>
+            <textarea name="welfare" rows="4"
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      maxlength="2000" required><?php echo htmlspecialchars($welfare ?? ''); ?></textarea>
+            <p class="text-gray-600 text-xs italic">Maximum 2000 characters</p>
+        </div>
+
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Contact Information</label>
+            <textarea name="contact" rows="3"
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      maxlength="2000" required><?php echo htmlspecialchars($contact ?? ''); ?></textarea>
             <p class="text-gray-600 text-xs italic">Maximum 2000 characters</p>
         </div>
 

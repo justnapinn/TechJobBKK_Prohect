@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'databaseConnect.php';
+include('navbar.php');
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -93,8 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script type="text/javascript"
             src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-<div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md">
+
+<body class="bg-gray-100 min-h-screen items-center justify-center">
+<?php generateNavbar(); ?>
+<div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
     <form method="POST" class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
