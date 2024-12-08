@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         postal_code = ?, 
         user_email = ?, 
         user_phone = ?, 
-        logos = ? 
+        logo = ? 
         WHERE user_id = ?");
 
         $stmt->bind_param("ssssssssssss",
@@ -122,8 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form method="POST" enctype="multipart/form-data" class="space-y-4">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">Profile Picture</label>
-            <?php if (!empty($user_data['logos'])): ?>
-                <img src="<?php echo htmlspecialchars($user_data['logos']); ?>" alt="Profile Picture"
+            <?php if (!empty($user_data['logo'])): ?>
+                <img src="<?php echo htmlspecialchars($user_data['logo']); ?>" alt="Profile Picture"
                      class="w-32 h-32 rounded-full mb-4 object-cover">
             <?php else: ?>
                 <p class="text-gray-500">No profile picture uploaded.</p>
