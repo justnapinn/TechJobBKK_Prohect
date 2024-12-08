@@ -1,6 +1,7 @@
 <?php
 session_start();
-require 'databaseConnect.php';
+require_once 'databaseConnect.php';
+include('navbar.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -50,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#f5d472]">
+<?php generateNavbar(); ?>
 <div class="max-w-md mx-auto mt-12 bg-white p-6 rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Login</h2>
     <form method="POST">
