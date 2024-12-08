@@ -26,10 +26,9 @@ $user_data = $result->fetch_assoc();
     <title>User Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-gray-100 min-h-screen items-center justify-center">
 <?php generateNavbar(); ?>
-
-<div class="w-full max-w-md bg-white shadow-lg rounded-lg p-8 text-center">
+<div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md mx-auto">
     <div class="mb-6">
         <?php if (!empty($user_data['logo'])): ?>
             <img
@@ -51,7 +50,8 @@ $user_data = $result->fetch_assoc();
         </p>
     </div>
 
-    <a href="profileEdit.php" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+    <a href="profileEdit.php"
+       class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
         Edit Profile
     </a>
 </div>
