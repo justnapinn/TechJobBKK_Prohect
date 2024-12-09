@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
@@ -40,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
     $conn->close();
 }
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
