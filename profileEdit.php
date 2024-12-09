@@ -43,27 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$user_email) $errors[] = "Invalid email address.";
     if (!preg_match('/^[0-9]{10}$/', $user_phone)) $errors[] = "Invalid phone number.";
 
-    $upload_dir = 'uploads/logos/';
-    $logo_path = $user_data['logo']; // Use the existing logo path as default
-
-    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == UPLOAD_ERR_OK) {
-        $file_tmp = $_FILES['profile_picture']['tmp_name'];
-        $file_name = basename($_FILES['profile_picture']['name']);
-        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-
-        if (in_array($file_ext, $allowed_extensions)) {
-            $upload_dir = 'uploads/logos/';
-            $new_file_name = $user_id . '_logo.' . $file_ext; // Unique file name
-            $logo_path = $upload_dir . $new_file_name;
-
-            if (!move_uploaded_file($file_tmp, $logo_path)) {
-                $errors[] = "Failed to upload profile picture. Check permissions.";
-            }
-        } else {
-            $errors[] = "Invalid file format. Allowed formats: jpg, jpeg, png, gif.";
-        }
-    }
     if (empty($errors)) {
         $stmt = $conn->prepare("UPDATE users SET 
         first_name = ?, 
@@ -75,14 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         province = ?, 
         postal_code = ?, 
         user_email = ?, 
-        user_phone = ?, 
-        logo = ? 
+        user_phone = ? 
         WHERE user_id = ?");
 
-        $stmt->bind_param("ssssssssssss",
+        $stmt->bind_param("sssssssssss",
             $first_name, $last_name, $birthday, $address, $subdistrict,
             $district, $province, $postal_code, $user_email,
-            $user_phone, $logo_path, $user_id);
+            $user_phone, $user_id);
 
         if ($stmt->execute()) {
             // Refresh the $user_data variable to fetch the updated data
@@ -118,18 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="bg-gray-100 min-h-screen items-center justify-center">
 <div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
-    <form method="POST" enctype="multipart/form-data" class="space-y-4">
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Profile Picture</label>
-            <?php if (!empty($user_data['logo'])): ?>
-                <img src="<?php echo htmlspecialchars($user_data['logo']); ?>" alt="Profile Picture"
-                     class="w-32 h-32 rounded-full mb-4 object-cover">
-            <?php else: ?>
-                <p class="text-gray-500">No profile picture uploaded.</p>
-            <?php endif; ?>
-            <input type="file" name="profile_picture" accept="image/*"
-                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
+    <form method="POST" class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
@@ -253,23 +220,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             notification.classList.add('hidden');
         }, 3000);
     }
-
-    // Profile picture preview
-    const profileInput = document.querySelector('input[name="profile_picture"]');
-    const profilePreview = document.querySelector('img[alt="Profile Picture"]');
-
-    profileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                if (profilePreview) {
-                    profilePreview.src = e.target.result;
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-    });
 
     // Check for PHP messages and show notification
     <?php if (!empty($success_message)): ?>

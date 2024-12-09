@@ -10,6 +10,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+$error_message = '';
+$success_message = '';
 
 // Fetch current user data
 $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = ?");
@@ -17,6 +19,56 @@ $stmt->bind_param("s", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user_data = $result->fetch_assoc();
+
+// Handle profile picture upload
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['profile_picture'])) {
+    $file_tmp = $_FILES['profile_picture']['tmp_name'];
+    $file_name = basename($_FILES['profile_picture']['name']);
+    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+    // Validate file
+    if (in_array($file_ext, $allowed_extensions)) {
+        $upload_dir = 'uploads/logos/';
+
+        // Ensure upload directory exists
+        if (!file_exists($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
+
+        $new_file_name = $user_id . '_logo.' . $file_ext;
+        $logo_path = $upload_dir . $new_file_name;
+
+        // Remove old logo if it exists
+        if (!empty($user_data['logo']) && file_exists($user_data['logo'])) {
+            unlink($user_data['logo']);
+        }
+
+        // Move uploaded file
+        if (move_uploaded_file($file_tmp, $logo_path)) {
+            // Update database with new logo path
+            $stmt = $conn->prepare("UPDATE users SET logo = ? WHERE user_id = ?");
+            $stmt->bind_param("ss", $logo_path, $user_id);
+
+            if ($stmt->execute()) {
+                // Refresh user data
+                $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = ?");
+                $stmt->bind_param("s", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $user_data = $result->fetch_assoc();
+
+                $success_message = "Profile picture updated successfully!";
+            } else {
+                $error_message = "Failed to update profile picture in database.";
+            }
+        } else {
+            $error_message = "Failed to upload profile picture.";
+        }
+    } else {
+        $error_message = "Invalid file format. Allowed formats: jpg, jpeg, png, gif.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,18 +81,27 @@ $user_data = $result->fetch_assoc();
 <body class="bg-gray-100 min-h-screen items-center justify-center">
 <div class="w-full fixed top-[60px] bg-white p-8 shadow-md z-10">
     <div class="flex items-center">
-        <div class="mr-4">
+        <div class="mr-4 relative group">
             <?php if (!empty($user_data['logo'])): ?>
                 <img
                         src="<?php echo htmlspecialchars($user_data['logo']); ?>"
                         alt="Profile Picture"
                         class="w-24 h-24 rounded-full object-cover border-4 border-blue-500"
+                        id="profileImage"
                 >
             <?php else: ?>
                 <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center">
                     <span class="text-gray-500">No Image</span>
                 </div>
             <?php endif; ?>
+
+            <!-- Upload Button Overlay -->
+            <label for="profile_picture" class="absolute inset-0 bg-black bg-opacity-50 rounded-full
+                flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                <span class="text-white text-sm">Change Photo</span>
+                <input type="file" name="profile_picture" id="profile_picture"
+                       class="hidden" accept="image/*" onchange="uploadProfilePicture(event)">
+            </label>
         </div>
 
         <div>
@@ -57,6 +118,69 @@ $user_data = $result->fetch_assoc();
        class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
         Edit Profile
     </a>
+
+    <!-- Notification Area -->
+    <div id="notification" class="fixed top-4 right-4 z-50 hidden">
+        <div id="notificationContent"
+             class="py-4 px-6 rounded-lg shadow-lg text-white transition-all duration-300 ease-in-out"></div>
+    </div>
 </div>
+
+<script>
+    function uploadProfilePicture(event) {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('profile_picture', file);
+
+        fetch('<?php echo $_SERVER['PHP_SELF']; ?>', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(result => {
+                // Reload the page to reflect changes
+                window.location.reload();
+            })
+            .catch(error => {
+                showNotification('Upload failed', 'error');
+            });
+    }
+
+    // Notification function
+    function showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        const notificationContent = document.getElementById('notificationContent');
+
+        // Reset classes
+        notificationContent.classList.remove('bg-green-500', 'bg-red-500');
+
+        // Set color based on type
+        if (type === 'success') {
+            notificationContent.classList.add('bg-green-500');
+        } else {
+            notificationContent.classList.add('bg-red-500');
+        }
+
+        // Set message
+        notificationContent.textContent = message;
+
+        // Show notification
+        notification.classList.remove('hidden');
+
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            notification.classList.add('hidden');
+        }, 3000);
+    }
+
+    // Show PHP messages if any
+    <?php if (!empty($success_message)): ?>
+    showNotification('<?php echo htmlspecialchars($success_message); ?>', 'success');
+    <?php endif; ?>
+
+    <?php if (!empty($error_message)): ?>
+    showNotification('<?php echo htmlspecialchars($error_message); ?>', 'error');
+    <?php endif; ?>
+</script>
 </body>
 </html>
