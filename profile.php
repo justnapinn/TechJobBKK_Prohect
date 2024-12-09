@@ -2,18 +2,13 @@
 session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
+include('checkLogin.php');
 
 // Disable caching for this page
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header("Expires: 0");
-
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
 
 $user_id = $_SESSION['user_id'];
 $error_message = '';
