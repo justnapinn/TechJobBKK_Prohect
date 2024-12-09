@@ -3,6 +3,12 @@ session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
 
+// Disable caching for this page
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -77,6 +83,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['profile_picture'])) {
     <meta charset="UTF-8">
     <title>User Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add meta tags to further prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- When loading profile photo, add a timestamp to force reload -->
+    <script>
+        function loadProfileImage() {
+            var profileImg = document.getElementById('profileImage');
+            if (profileImg) {
+                // Add current timestamp to image source to prevent caching
+                profileImg.src = profileImg.src + '?t=' + new Date().getTime();
+            }
+        }
+
+        // Call on page load
+        window.onload = loadProfileImage;
+    </script>
 </head>
 <body class="bg-gray-100 min-h-screen items-center justify-center">
 <div class="w-full fixed top-[60px] bg-white p-8 shadow-md z-10">
