@@ -69,7 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute();
             $result = $stmt->get_result();
             $user_data = $result->fetch_assoc();
-            $success_message = "Profile updated successfully!";
+
+            // Redirect to profile.php after successful update
+            header("Location: profile.php");
+            exit();
         } else {
             $error_message = "Update failed: " . $stmt->error;
         }
@@ -96,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="bg-gray-100 min-h-screen items-center justify-center">
 <div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
-    <form method="POST" class="space-y-4">
+    <form method="POST" id="profileForm" class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
@@ -171,8 +174,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
 
         <div class="flex items-center justify-center">
-            <button type="submit"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button type="submit" id="updateButton"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    disabled>
                 Update Profile
             </button>
         </div>
@@ -192,6 +196,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $amphoe: $('#amphoe'),
         $province: $('#province'),
         $zipcode: $('#zipcode')
+    });
+
+    // Function to check if any form values have changed
+    function checkFormChanges() {
+        const form = document.getElementById('profileForm');
+        const updateButton = document.getElementById('updateButton');
+
+        // Get all input and textarea elements
+        const inputs = form.querySelectorAll('input, textarea');
+        let hasChanges = false;
+
+        // Check each input for changes
+        inputs.forEach(input => {
+            const originalValue = input.getAttribute('data-original-value');
+            const currentValue = input.value.trim();
+
+            if (originalValue !== currentValue) {
+                hasChanges = true;
+            }
+        });
+
+        // Enable/disable button based on changes
+        updateButton.disabled = !hasChanges;
+
+        // Update button styling
+        if (hasChanges) {
+            updateButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            updateButton.classList.add('hover:bg-blue-700');
+        } else {
+            updateButton.classList.add('opacity-50', 'cursor-not-allowed');
+            updateButton.classList.remove('hover:bg-blue-700');
+        }
+    }
+
+    // Add event listeners to all form inputs
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('profileForm');
+        const inputs = form.querySelectorAll('input, textarea');
+
+        inputs.forEach(input => {
+            // Store original value as a data attribute
+            input.setAttribute('data-original-value', input.value.trim());
+
+            // Add input event listener
+            input.addEventListener('input', checkFormChanges);
+        });
+
+        // Initial check
+        checkFormChanges();
     });
 
     // Function to show notification
