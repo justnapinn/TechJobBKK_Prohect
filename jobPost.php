@@ -2,12 +2,7 @@
 session_start();
 require 'databaseConnect.php';
 include('navbar.php');
-
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+include('checkLogin.php');
 ?>
 
 <!DOCTYPE html>

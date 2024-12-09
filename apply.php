@@ -2,6 +2,7 @@
 session_start();
 require 'databaseConnect.php';
 include('navbar.php');
+include('checkLogin.php');
 
 $job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
 $user_id = $_SESSION['user_id'];
