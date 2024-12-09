@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="hidden" name="user_type" value="2">
 
         <div class="mb-4">
-            <label for="username" class="block text-gray-700 font-medium mb-2">Username:</label>
+            <label for="username" class="block text-gray-700 font-medium mb-2" >Username:</label>
             <input
                     type="text"
                     name="username"
@@ -224,6 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $amphoe: $('#amphoe'),
         $province: $('#province'),
         $zipcode: $('#zipcode'),
+        language: 'en'
     });
 </script>
 </body>
