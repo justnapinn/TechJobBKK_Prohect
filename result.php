@@ -7,20 +7,28 @@ include('checkLogin.php');
 // Get search parameters from the form
 $keyword = $_GET['keyword'] ?? '';
 $job_type = $_GET['job-type'] ?? '';
+$job_location = $_GET['location'] ?? '';
 
 // Build the SQL query based on the search parameters
-$sql = "SELECT j.*, u.first_name, u.logo
+$sql = "SELECT j.*, u.first_name, u.logo , u.province
         FROM jobs j
         INNER JOIN users u ON j.user_id = u.user_id";
 
 $where_clause = [];
 
+// Add keyword search
 if (!empty($keyword)) {
     $where_clause[] = "(j.title LIKE '%$keyword%' OR u.username LIKE '%$keyword%')";
 }
 
+// Add job type filter
 if (!empty($job_type)) {
     $where_clause[] = "j.job_type = '$job_type'";
+}
+
+// Add location filter
+if (!empty($job_location) && $job_location !== 'all') { // 'all' is for no filtering
+    $where_clause[] = "u.province = '$job_location'";
 }
 
 // Combine the where clauses using AND
