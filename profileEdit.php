@@ -19,13 +19,13 @@ $user_data = $result->fetch_assoc();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitize and validate input (with additional validations)
     $first_name = htmlspecialchars(trim($_POST['first_name']));
-    $last_name = htmlspecialchars(trim($_POST['last_name']));
+    $last_name = !empty(trim($_POST['last_name'])) ? htmlspecialchars(trim($_POST['last_name'])) : $user_data['last_name'];
     $birthday = $_POST['birthday'];
     $address = htmlspecialchars(trim($_POST['address']));
     $subdistrict = htmlspecialchars(trim($_POST['subdistrict']));
     $district = htmlspecialchars(trim($_POST['district']));
     $province = htmlspecialchars(trim($_POST['province']));
-    $postal_code = htmlspecialchars(trim($_POST['postal_code']));
+    $postal_code = htmlspecialchars(trim($_POST['postal_code'])) ? htmlspecialchars(trim($_POST['postal_code'])) : $user_data['postal_code'];
     $user_email = filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL);
     $user_phone = htmlspecialchars(trim($_POST['user_phone']));
 
@@ -95,20 +95,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="w-full max-w-xl bg-white p-8 rounded-lg shadow-md mx-auto">
     <h2 class="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
     <form method="POST" id="profileForm" class="space-y-4">
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
-                <input type="text" name="first_name"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       value="<?php echo htmlspecialchars($user_data['first_name']); ?>" required>
-            </div>
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
-                <input type="text" name="last_name"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       value="<?php echo htmlspecialchars($user_data['last_name']); ?>" required>
-            </div>
+    <div class="grid grid-cols-2 gap-4">
+    <?php if ($user_data['user_type'] === 'company'): ?>
+        <!-- If user is company -->
+        <div class="col-span-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Company Name</label>
+            <input type="text" name="first_name"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   value="<?php echo htmlspecialchars($user_data['first_name']); ?>" required>
         </div>
+    <?php else: ?>
+        <!-- If user is applicant -->
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+            <input type="text" name="first_name"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   value="<?php echo htmlspecialchars($user_data['first_name']); ?>" required>
+        </div>
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+            <input type="text" name="last_name"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   value="<?php echo htmlspecialchars($user_data['last_name']); ?>" required>
+        </div>
+    <?php endif; ?>
+</div>
+
 
         <div class="grid grid-cols-2 gap-4">
             <div>
@@ -167,7 +179,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                        value="<?php echo htmlspecialchars($user_data['province'] ?? ''); ?>" required>
             </div>
         </div>
-
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <input type="hidden" id="zipcode" name="postal_code">
+            </div>
+        </div>
         <div class="flex items-center justify-center">
             <button type="submit" id="updateButton"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -187,10 +203,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script>
     // Thailand.js integration
     $.Thailand({
-        $district: $('#district'),
-        $amphoe: $('#amphoe'),
-        $province: $('#province'),
-        $zipcode: $('#zipcode')
+    $district: $('#district'),
+    $amphoe: $('#amphoe'),
+    $province: $('#province'),
+    $zipcode: $('#zipcode')
     });
 
     // Function to check if any form values have changed
