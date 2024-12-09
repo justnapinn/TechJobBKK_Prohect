@@ -21,7 +21,6 @@ $sql = "
         j.welfare,
         j.contact,
         u.first_name AS company_first_name,
-        u.last_name AS company_last_name,
         a.status,
         a.applied_at
     FROM 
@@ -73,7 +72,7 @@ $result = $stmt->get_result();
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr class="border-b hover:bg-gray-50">
                             <td class="py-3 px-6"><?= htmlspecialchars($row['title']) ?></td>
-                            <td class="py-3 px-6"><?= htmlspecialchars($row['company_first_name'] . ' ' . $row['company_last_name']) ?></td>
+                            <td class="py-3 px-6"><?= htmlspecialchars($row['company_first_name']) ?></td>
                             <td class="py-3 px-6"><?= htmlspecialchars($row['job_type']) ?></td>
                             <td class="py-3 px-6"><?= htmlspecialchars($row['description']) ?></td>
                             <td class="py-3 px-6"><?= htmlspecialchars($row['welfare']) ?></td>
@@ -82,7 +81,7 @@ $result = $stmt->get_result();
                             <td class="py-3 px-6">
                             <span class="
                                 <?php
-                            switch($row['status']) {
+                            switch ($row['status']) {
                                 case 'pending':
                                     echo 'text-yellow-600';
                                     break;
