@@ -58,7 +58,7 @@ $result = $conn->query($sql);
                 <?php while ($row = $result->fetch_assoc()) { ?>
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex items-center mb-4">
-                            <?php if (!empty($row['logo']) && filter_var($row['logo'], FILTER_VALIDATE_URL)): ?>
+                            <?php if (!empty($row['logo']) && file_exists($row['logo'])): ?>
                                 <img src="<?php echo htmlspecialchars($row['logo']); ?>" alt="Company Logo"
                                     class="w-16 h-16 mr-4 rounded-full">
                             <?php else: ?>
