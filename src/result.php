@@ -40,14 +40,16 @@ if (!empty($where_clause)) {
 $result = $conn->query($sql);
 ?>
 
-    <!DOCTYPE html>
-    <html lang="th">
-    <head>
-        <meta charset="UTF-8">
-        <title>Job Search Results - TechJobBkk</title>
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    </head>
-    <body class="bg-gray-100">
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Job Search Results - TechJobBkk</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-2xl font-bold mb-6">ผลการค้นหางาน</h1>
 
@@ -56,10 +58,13 @@ $result = $conn->query($sql);
                 <?php while ($row = $result->fetch_assoc()) { ?>
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex items-center mb-4">
-                            <?php if (!empty($row['logo'])): ?>
-                                <img src="
-                            <?php echo htmlspecialchars($row['logo']); ?>" alt="Company Logo"
-                                     class="w-16 h-16 mr-4 rounded-full">
+                            <?php if (!empty($row['logo']) && filter_var($row['logo'], FILTER_VALIDATE_URL)): ?>
+                                <img src="<?php echo htmlspecialchars($row['logo']); ?>" alt="Company Logo"
+                                    class="w-16 h-16 mr-4 rounded-full">
+                            <?php else: ?>
+                                <div class="w-16 h-16 mr-4 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <span class="text-gray-500 text-sm">No Profile</span>
+                                </div>
                             <?php endif; ?>
                             <h2 class="text-xl font-semibold"><?php echo htmlspecialchars($row['title']); ?></h2>
                         </div>
@@ -75,7 +80,7 @@ $result = $conn->query($sql);
                             <?php echo substr(htmlspecialchars($row['description']), 0, 150) . '...'; ?>
                         </p>
                         <a href="jobPost.php?job_id=<?php echo $row['job_id']; ?>"
-                           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                             ดูรายละเอียด
                         </a>
                     </div>
@@ -87,8 +92,9 @@ $result = $conn->query($sql);
             </div>
         <?php } ?>
     </div>
-    </body>
-    </html>
+</body>
+
+</html>
 
 <?php
 $conn->close();
