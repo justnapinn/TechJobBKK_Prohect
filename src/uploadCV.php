@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // ตรวจสอบประเภทไฟล์ที่อัพโหลด
     $fileType = strtolower(pathinfo($_FILES["cv"]["name"], PATHINFO_EXTENSION));
-    $filename = uniqid() . '.' . $fileType;  // สร้างชื่อไฟล์ใหม่ที่ไม่ซ้ำกัน
+    $filename = uniqid() . 'TechJobBKK_Project' . $fileType;  // สร้างชื่อไฟล์ใหม่ที่ไม่ซ้ำกัน
     $cv_file = $target_dir . $filename;  // ตั้งค่าที่อยู่ของไฟล์ที่อัพโหลด
 
 // ตรวจสอบประเภทไฟล์ที่อนุญาต (PDF, DOC, DOCX)
