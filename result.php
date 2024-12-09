@@ -2,6 +2,7 @@
 session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
+include('checkLogin.php');
 
 // Get search parameters from the form
 $keyword = $_GET['keyword'] ?? '';
