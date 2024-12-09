@@ -178,12 +178,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                        id="province"
                        value="<?php echo htmlspecialchars($user_data['province'] ?? ''); ?>" required>
             </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
             <div>
-                <input type="hidden" id="zipcode" name="postal_code">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Postal Code</label>
+            <input type="text" name="postal_code"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="zipcode"
+                       value="<?php echo htmlspecialchars($user_data['postal_code'] ?? ''); ?>" required>
+                
             </div>
         </div>
+        
         <div class="flex items-center justify-center">
             <button type="submit" id="updateButton"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
