@@ -24,6 +24,7 @@ if (isset($_SESSION['user_id'])) {
                 <a href="index.php" class="text-2xl font-bold">TechJobBkk</a>
                 <div class="space-x-4">
                     <a href="profile.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">Profile</a>
+                    <a href="myJobs.php" class="text-white hover:bg-gray-700 px-3 py-2 rounded">My Jobs</a>
                     <a href="logout.php" class="text-black hover:bg-white-700 bg-white-600 px-3 py-2 rounded">Logout</a>
                 </div>
             </div>
