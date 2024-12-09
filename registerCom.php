@@ -50,6 +50,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         (user_id, user_type, username, password, first_name, last_name, birthday, address, subdistrict, district, province, postal_code, user_email, user_phone) 
         VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("sssssssssssss", $user_type, $username, $password, $first_name, $last_name, $birthday, $address, $subdistrict, $district, $province, $postal_code, $user_email, $user_phone);
+    
+    function containsEnglish($text) {
+        // ถ้ามีตัวอักษรภาษาอังกฤษในข้อความ ให้คืนค่า true
+        return preg_match('/[a-zA-Z]/', $text);
+    }
+    
+    if(10 !== strlen($user_phone)) {
+        echo "<script>
+            alert('Phone number must be 10 number.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+    
+    // ตรวจสอบ Subdistrict
+    if (containsEnglish($subdistrict)) {
+        echo "<script>
+            alert('Subdistrict must not contain English letters.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+    
+    // ตรวจสอบ District
+    if (containsEnglish($district)) {
+        echo "<script>
+            alert('District must not contain English letters.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+    
+    // ตรวจสอบ Province
+    if (containsEnglish($province)) {
+        echo "<script>
+            alert('Province must not contain English letters.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+
 
     if ($stmt->execute()) {
         echo "<script>

@@ -61,6 +61,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ");
     $stmt->bind_param("sssssssssssss", $user_type, $username, $password, $first_name, $last_name, $birthday, $address, $subdistrict, $district, $province, $postal_code, $user_email, $user_phone);
 
+
+    function containsEnglish($text) {
+        // ถ้ามีตัวอักษรภาษาอังกฤษในข้อความ ให้คืนค่า true
+        return preg_match('/[a-zA-Z]/', $text);
+    }
+    
+    // ตรวจสอบ Subdistrict
+    if (containsEnglish($subdistrict)) {
+        echo "<script>
+            alert('Subdistrict must not contain English letters.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+    
+    // ตรวจสอบ District
+    if (containsEnglish($district)) {
+        echo "<script>
+            alert('District must not contain English letters.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+    
+    // ตรวจสอบ Province
+    if (containsEnglish($province)) {
+        echo "<script>
+            alert('Province must not contain English letters.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+    
     if ($stmt->execute()) {
         echo "<script>
             alert('Registration completed successfully!');
@@ -73,6 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             window.history.back();
         </script>";
     }
+    
+ 
+
 
     $stmt->close();
     $conn->close();
@@ -184,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     required>
         </div>
         <div class="mb-4">
-            <label for="district" class="block text-gray-700 font-medium mb-2">District:</label>
+            <label for="district" class="block text-gray-700 font-medium mb-2" >District</label>
             <input
                     type="text"
                     name="district"
@@ -193,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     required>
         </div>
         <div class="mb-4">
-            <label for="province" class="block text-gray-700 font-medium mb-2">Province:</label>
+            <label for="province" class="block text-gray-700 font-medium mb-2" >Province:</label>
             <input
                     type="text"
                     name="province"
@@ -224,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $amphoe: $('#amphoe'),
         $province: $('#province'),
         $zipcode: $('#zipcode'),
-        language: 'en'
+        
     });
 </script>
 </body>
