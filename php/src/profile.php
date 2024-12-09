@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
@@ -70,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['profile_picture'])) {
         $error_message = "Invalid file format. Allowed formats: jpg, jpeg, png, gif.";
     }
 }
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['profile_picture'])) {
                 <div class="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center">
                     <span class="text-gray-500">No Image</span>
                 </div>
-            <?php endif; ?> 
+            <?php endif; ?>
 
             <!-- Upload Button Overlay -->
             <label for="profile_picture" class="absolute inset-0 bg-black bg-opacity-50 rounded-full
@@ -123,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['profile_picture'])) {
             </label>
         </div>
 
-        
+
     </div>
 
     <div class="flex flex-col items-center justify-center text-center">
