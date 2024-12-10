@@ -1,4 +1,5 @@
 <?php
+ob_start(); 
 session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
@@ -8,13 +9,11 @@ $user_id = $_SESSION['user_id'];
 $error_message = '';
 $success_message = '';
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $old_password = htmlspecialchars(trim($_POST['old_password']));
     $new_password = htmlspecialchars(trim($_POST['new_password']));
     $confirm_password = htmlspecialchars(trim($_POST['confirm_password']));
 
-    // Fetch current password from DB
     $stmt = $conn->prepare("SELECT password FROM users WHERE user_id = ?");
     $stmt->bind_param("s", $user_id);
     $stmt->execute();
@@ -28,21 +27,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif ($old_password === $new_password) {
         $error_message = "New password must not be the same as the old password.";
     } else {
-        // Hash the new password
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
-        // Update password in DB
         $stmt = $conn->prepare("UPDATE users SET password = ? WHERE user_id = ?");
         $stmt->bind_param("ss", $hashed_password, $user_id);
 
         if ($stmt->execute()) {
-            $success_message = "Password has been changed successfully.";
+            header("Location: profile.php");
+            exit();
         } else {
-            $error_message = "An error occurred while changing the password." . $stmt->error;
+            $error_message = "An error occurred while changing the password: " . $stmt->error;
         }
     }
 }
+
+ob_end_flush(); 
 ?>
+
 
 <!DOCTYPE html>
 <html>
