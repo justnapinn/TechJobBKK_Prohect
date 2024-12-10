@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $postal_code = trim($_POST['postal_code']);
     $user_email = trim($_POST['user_email']);
     $user_phone = trim($_POST['user_phone']);
+    $password = trim($_POST['password']);
 
     // Validate Birthday
     if ($birthday >= date('Y-m-d')) {
@@ -148,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     required>
         </div>
         <div class="mb-4">
-            <label for="password" class="block text-gray-700 font-medium mb-2">Password:</label>
+            <label for="password" class="block text-gray-700 font-medium mb-2" placeholder="ประกอบด้วยอักขระพิเศษอย่างน้อย1ตัวและไม่ต่ำกว่า8ตัวอักษร ">Password:</label>
             <input
                     type="password"
                     name="password"

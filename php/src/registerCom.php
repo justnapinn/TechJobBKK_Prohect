@@ -17,6 +17,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $postal_code = trim($_POST['postal_code']);
     $user_email = trim($_POST['user_email']);
     $user_phone = trim($_POST['user_phone']);
+    $password = trim($_POST['password']);
+    
+
+    if (!preg_match('/^(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/', $password)) {
+        echo "<script>
+            alert('Password must be at least 8 characters long and include at least one special character.');
+            window.history.back();
+        </script>";
+        exit(); 
+        }
+        $password = password_hash($password, PASSWORD_DEFAULT);
+    
 
     // Check for duplicate company name
     $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE first_name = ?");
@@ -160,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
 
             <div class="mb-4">
-                <label for="password" class="block text-gray-700 font-medium mb-2">Password:</label>
+                <label for="password" class="block text-gray-700 font-medium mb-2" placeholder="ประกอบด้วยอักขระพิเศษอย่างน้อย1ตัวและไม่ต่ำกว่า8ตัวอักษร ">Password:</label>
                 <input type="password" name="password" id="password"
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
