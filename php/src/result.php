@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
@@ -38,18 +39,20 @@ if (!empty($where_clause)) {
 
 // Execute the query
 $result = $conn->query($sql);
+
+ob_end_flush();
 ?>
 
-<!DOCTYPE html>
-<html lang="th">
+    <!DOCTYPE html>
+    <html lang="th">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Job Search Results - TechJobBkk</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Job Search Results - TechJobBkk</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    </head>
 
-<body class="bg-gray-100">
+    <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-2xl font-bold mb-6">ผลการค้นหางาน</h1>
 
@@ -60,7 +63,7 @@ $result = $conn->query($sql);
                         <div class="flex items-center mb-4">
                             <?php if (!empty($row['logo']) && file_exists($row['logo'])): ?>
                                 <img src="<?php echo htmlspecialchars($row['logo']); ?>" alt="Company Logo"
-                                    class="w-16 h-16 mr-4 rounded-full">
+                                     class="w-16 h-16 mr-4 rounded-full">
                             <?php else: ?>
                                 <div class="w-16 h-16 mr-4 rounded-full bg-gray-200 flex items-center justify-center">
                                     <span class="text-gray-500 text-sm">No Profile</span>
@@ -80,7 +83,7 @@ $result = $conn->query($sql);
                             <?php echo substr(htmlspecialchars($row['description']), 0, 150) . '...'; ?>
                         </p>
                         <a href="jobPost.php?job_id=<?php echo $row['job_id']; ?>"
-                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                             ดูรายละเอียด
                         </a>
                     </div>
@@ -92,9 +95,9 @@ $result = $conn->query($sql);
             </div>
         <?php } ?>
     </div>
-</body>
+    </body>
 
-</html>
+    </html>
 
 <?php
 $conn->close();
