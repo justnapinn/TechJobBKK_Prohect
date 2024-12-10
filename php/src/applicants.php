@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
 }
 
 $company_id = $_SESSION['user_id'];
+$title = ['title'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     $app_id = $_POST['app_id'];
@@ -43,6 +44,7 @@ $sql = "
         TIMESTAMPDIFF(YEAR, u.birthday, CURDATE()) AS age,
         u.user_email,
         u.user_phone,
+        j.title,
         a.resume,
         a.applied_at,
         a.status
@@ -91,6 +93,7 @@ $result = $stmt->get_result();
                 <th class="py-3 px-6 text-left">Age</th>
                 <th class="py-3 px-6 text-left">Email</th>
                 <th class="py-3 px-6 text-left">Phone</th>
+                <th class="py-3 px-6 text-left">Title</th>
                 <th class="py-3 px-6 text-left">Resume</th>
                 <th class="py-3 px-6 text-left">Applied At</th>
                 <th class="py-3 px-6 text-left">Status</th>
@@ -105,6 +108,7 @@ $result = $stmt->get_result();
                     <td class="py-3 px-6"><?= htmlspecialchars($row['age']) ?></td>
                     <td class="py-3 px-6"><?= htmlspecialchars($row['user_email']) ?></td>
                     <td class="py-3 px-6"><?= htmlspecialchars($row['user_phone']) ?></td>
+                    <td class="py-3 px-6"><?= htmlspecialchars($row['title']) ?></td>
                     <td class="py-3 px-6"><a href="<?= htmlspecialchars($row['resume']) ?>"
                                              class="text-blue-600 underline" target="_blank">View Resume</a></td>
                     <td class="py-3 px-6"><?= htmlspecialchars($row['applied_at']) ?></td>
