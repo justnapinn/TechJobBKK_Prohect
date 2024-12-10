@@ -63,9 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     required>
                 <option value="">Select Job Type</option>
-                <option value="Hybrid">Hybrid</option>
-                <option value="Work-From-Home">Work-From-Home</option>
-                <option value="Onsite">Onsite</option>
+                <option value="hybrid">Hybrid</option>
+                <option value="remote">Work-From-Home</option>
+                <option value="onsite">Onsite</option>
             </select>
         </div>
 
