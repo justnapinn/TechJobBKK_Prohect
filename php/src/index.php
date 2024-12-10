@@ -107,8 +107,8 @@ include('navbar.php');
                         <input type="checkbox" id="job-type-hybrid" name="job-type[]" value="hybrid">
                         <label for="job-type-hybrid"> hybrid </label><br>
 
-                        <input type="checkbox" id="job-type-remote" name="job-type[]" value="remote">
-                        <label for="job-type-remote"> Work-Form-Home </label><br>
+                        <input type="checkbox" id="job-type-work-from-home" name="job-type[]" value="work-from-home">
+                        <label for="job-type-work-from-home"> Work-Form-Home </label><br>
 
                         <input type="checkbox" id="job-type-onsite" name="job-type[]" value="onsite">
                         <label for="job-type-onsite"> Onsite 100% </label><br>
