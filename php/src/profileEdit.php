@@ -39,6 +39,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$user_email) $errors[] = "Invalid email address.";
     if (!preg_match('/^[0-9]{10}$/', $user_phone)) $errors[] = "Invalid phone number.";
 
+
+
+
+        // Check if email is already in use
+    $stmt_email = $conn->prepare("SELECT COUNT(*) FROM users WHERE user_email = ?");
+    if (!$stmt_email) {
+        echo "<script>
+            alert('Database error: Unable to prepare email statement.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+
+    $stmt_email->bind_param("s", $user_email);
+    $stmt_email->execute();
+    $stmt_email->bind_result($email_count);
+    $stmt_email->fetch();
+    $stmt_email->close();
+
+    if ($email_count > 0) {
+        echo "<script>
+            alert('The email is already in use. Please use a different email.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+
+    // Check if phone number is already in use
+    $stmt_phone = $conn->prepare("SELECT COUNT(*) FROM users WHERE user_phone = ?");
+    if (!$stmt_phone) {
+        echo "<script>
+            alert('Database error: Unable to prepare phone statement.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+
+    $stmt_phone->bind_param("s", $user_phone);
+    $stmt_phone->execute();
+    $stmt_phone->bind_result($phone_count);
+    $stmt_phone->fetch();
+    $stmt_phone->close();
+
+    if ($phone_count > 0) {
+        echo "<script>
+            alert('The phone number is already in use. Please use a different phone number.');
+            window.history.back();
+        </script>";
+        exit();
+    }
+
+
+
     if (empty($errors)) {
         $stmt = $conn->prepare("UPDATE users SET 
         first_name = ?, 
