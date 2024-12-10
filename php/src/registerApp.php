@@ -19,6 +19,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_phone = trim($_POST['user_phone']);
     $password = trim($_POST['password']);
 
+
+
+    if (!preg_match('/^(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/', $password)) {
+        echo "<script>
+            alert('Password must be at least 8 characters long and include at least one special character.');
+            window.history.back();
+        </script>";
+        exit(); 
+        }
+        $password = password_hash($password, PASSWORD_DEFAULT);
     // Validate Birthday
     if ($birthday >= date('Y-m-d')) {
         echo "<script>
