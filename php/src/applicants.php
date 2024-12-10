@@ -18,12 +18,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     $update_stmt = $conn->prepare($update_sql);
     $update_stmt->bind_param('ss', $new_status, $app_id);
 
+    // if ($update_stmt->execute()) {
+    //     $message = "Application status updated successfully!";
+    // } else {
+    //     $message = "Error updating status: " . $conn->error;
+    // }
     if ($update_stmt->execute()) {
-        $message = "Application status updated successfully!";
+        $message = "Application status updated successfully!";  
+        echo "<script>alert('Application status updated successfully!');</script>";
     } else {
         $message = "Error updating status: " . $conn->error;
+        echo "<script>alert('Error updating status: " . htmlspecialchars($conn->error) . "');</script>";
     }
     $update_stmt->close();
+    
+    
 }
 
 $sql = "
