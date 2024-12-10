@@ -104,9 +104,15 @@ include('navbar.php');
                 <div>
                     <label class="block font-bold mb-2">รูปแบบการทำงาน</label>
                     <div class="flex gap-4">
-                        <label><input type="radio" name="job-type" value="hybrid"> Hybrid Work</label>
-                        <label><input type="radio" name="job-type" value="remote"> Work from Home</label>
-                        <label><input type="radio" name="job-type" value="onsite"> Onsite 100%</label>
+                        <input type="checkbox" id="job-type-hybrid" name="job-type[]" value="hybrid">
+                        <label for="job-type-hybrid"> hybrid </label><br>
+
+                        <input type="checkbox" id="job-type-remote" name="job-type[]" value="remote">
+                        <label for="job-type-remote"> Work-Form-Home </label><br>
+
+                        <input type="checkbox" id="job-type-onsite" name="job-type[]" value="onsite">
+                        <label for="job-type-onsite"> Onsite 100% </label><br>
+                        
                     </div>
                 </div>
 
