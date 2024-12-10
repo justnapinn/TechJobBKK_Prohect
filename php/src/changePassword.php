@@ -1,5 +1,5 @@
 <?php
-ob_start(); 
+ob_start();
 session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
@@ -9,11 +9,13 @@ $user_id = $_SESSION['user_id'];
 $error_message = '';
 $success_message = '';
 
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $old_password = htmlspecialchars(trim($_POST['old_password']));
     $new_password = htmlspecialchars(trim($_POST['new_password']));
     $confirm_password = htmlspecialchars(trim($_POST['confirm_password']));
 
+    // Fetch current password from DB
     $stmt = $conn->prepare("SELECT password FROM users WHERE user_id = ?");
     $stmt->bind_param("s", $user_id);
     $stmt->execute();
@@ -26,14 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error_message = "The new password and confirmation password do not match.";
     } elseif ($old_password === $new_password) {
         $error_message = "New password must not be the same as the old password.";
+    } elseif (strlen($new_password) < 8) {
+        $error_message = "New password must be at least 8 characters long.";
+    } elseif (!preg_match("/[\W_]/", $new_password)) {
+        $error_message = "New password must contain at least one special character.";
     } else {
+        // Hash the new password
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
+        // Update password in DB
         $stmt = $conn->prepare("UPDATE users SET password = ? WHERE user_id = ?");
         $stmt->bind_param("ss", $hashed_password, $user_id);
 
         if ($stmt->execute()) {
-            header("Location: profile.php");
+            $_SESSION['success_message'] = "Password has been changed successfully."; // Set session variable for success
+            header("Location: changePassword.php"); // Redirect to the same page to show the success message
             exit();
         } else {
             $error_message = "An error occurred while changing the password: " . $stmt->error;
@@ -41,9 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-ob_end_flush(); 
+ob_end_flush();
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -86,7 +94,38 @@ ob_end_flush();
                 Change Password
             </button>
         </div>
+
+        <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50 hidden">
+            <div class="bg-white p-6 rounded shadow-lg text-center">
+                <h3 class="text-xl font-semibold">Password Changed Successfully</h3>
+                <p>Your password has been updated successfully.</p>
+                <button id="closeModal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">OK</button>
+            </div>
+        </div>
+
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = <?php echo json_encode($_SESSION['success_message'] ?? ''); ?>;
+            const modal = document.getElementById('successModal');
+            const closeModalButton = document.getElementById('closeModal');
+
+            if (successMessage) {
+                // Show Modal
+                modal.classList.remove('hidden');
+
+                // When OK button is clicked, hide the modal and redirect
+                closeModalButton.addEventListener('click', function() {
+                    modal.classList.add('hidden');
+                    window.location.href = "profile.php"; // Redirect to profile page
+                });
+
+                // Clear success message after showing the modal
+                <?php unset($_SESSION['success_message']); ?>
+            }
+        });
+    </script>
 </div>
 </body>
 </html>
