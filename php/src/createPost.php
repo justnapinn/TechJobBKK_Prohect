@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     required>
                 <option value="">Select Job Type</option>
                 <option value="hybrid">Hybrid</option>
-                <option value="remote">Work-From-Home</option>
+                <option value="work-from-home">Work-From-Home</option>
                 <option value="onsite">Onsite</option>
             </select>
         </div>
