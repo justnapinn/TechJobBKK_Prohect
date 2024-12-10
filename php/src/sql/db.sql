@@ -46,7 +46,7 @@ CREATE TABLE `jobs` (
   `job_id` varchar(255) NOT NULL,
   `user_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `job_type` enum('hybrid','remote','onsite') NOT NULL,
+  `job_type` enum('hybrid','work-from-home','onsite') NOT NULL,
   `description` varchar(2000) NOT NULL,
   `welfare` varchar(2000) NOT NULL,
   `contact` varchar(2000) NOT NULL
