@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 require 'databaseConnect.php';
 include('navbar.php');
@@ -132,6 +133,7 @@ if (!empty($job_id)) {
 } else {
     echo "<p class='text-center text-xl text-gray-700'>ไม่พบ job_id ที่ระบุ</p>";
 }
+ob_end_flush();
 ?>
 
 <!-- ปุ่ม Apply -->

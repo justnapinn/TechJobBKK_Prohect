@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 require_once 'databaseConnect.php';
 include('navbar.php');
@@ -73,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
