@@ -99,19 +99,19 @@ ob_end_flush();
         window.onload = loadProfileImage;
     </script>
 </head>
-<body class="bg-pink-100 min-h-screen items-center justify-center">
-<div class="w-[30rem] h-[25rem] fixed top-[60px] bg-white p-8 shadow-md z-10 ml-[32rem] mt-[7rem] rounded-lg">
-    <div class="flex items-center ml-[10rem]">
-        <div class="ml-[-0.9rem] relative group ">
+<body class="bg-gray-100 min-h-screen items-center justify-center">
+<div class="w-full fixed top-[60px] bg-white p-8 shadow-md z-10">
+    <div class="flex items-center">
+        <div class="mr-4 relative group">
             <?php if (!empty($user_data['logo'])): ?>
                 <img
                         src="<?php echo htmlspecialchars($user_data['logo']); ?>"
                         alt="Profile Picture"
-                        class="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+                        class="w-24 h-24 rounded-full object-cover border-4 border-blue-500"
                         id="profileImage"
                 >
             <?php else: ?>
-                <div class="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center">
+                <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center">
                     <span class="text-gray-500">No Image</span>
                 </div>
             <?php endif; ?>
@@ -125,34 +125,37 @@ ob_end_flush();
             </label>
         </div>
 
-
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">
+                <?php echo htmlspecialchars($user_data['first_name'] . ' ' . $user_data['last_name']); ?>
+            </h2>
+            <p class="text-gray-600 mt-2">
+                <?php echo htmlspecialchars($user_data['user_email']); ?>
+            </p>
+        </div>
     </div>
-
-    <div class="flex flex-col items-center justify-center text-center">
-        <h2 class="mt-[0.5rem] text-2xl font-bold text-gray-800">
-            <?php echo htmlspecialchars($user_data['first_name']); ?>
-        </h2>
-        <h2 class="mt-[1rem] text-2xl font-bold text-gray-800">
-            <?php echo htmlspecialchars($user_data['last_name']); ?>
-        </h2>
-        <p class="mt-[1rem] text-gray-600">
-            <?php echo htmlspecialchars($user_data['user_email']); ?>
-        </p>
-    </div>
-
-
     <a href="profileEdit.php"
-       class="mt-[1.5rem] ml-[9.5rem] inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+        class="mt-4  inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
         Edit Profile
     </a>
+
+    <a href="changePassword.php"
+        class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+        Change Password
+    </a>
+    
 
     <!-- Notification Area -->
     <div id="notification" class="fixed top-4 right-4 z-50 hidden">
         <div id="notificationContent"
-             class="py-4 px-6 rounded-lg shadow-lg text-white transition-all duration-300 ease-in-out">
-        </div>
+             class="py-4 px-6 rounded-lg shadow-lg text-white transition-all duration-300 ease-in-out"></div>
     </div>
 </div>
+
+    
+
+    
+
 
 <script>
     function uploadProfilePicture(event) {
