@@ -10,7 +10,7 @@ $keyword = $_GET['keyword'] ?? '';
 $job_type = $_GET['job-type'] ?? [];
 $job_location = $_GET['location'] ?? '';
 
-$job_types = is_array($job_type) ? array_filter($job_type, fn($type) => in_array($type, ['hybrid', 'remote', 'onsite'])) : [];
+$job_types = is_array($job_type) ? array_filter($job_type, fn($type) => in_array($type, ['hybrid', 'work-from-home', 'onsite'])) : [];
 
 // Build the SQL query based on the search parameters
 $sql = "SELECT j.*, u.first_name, u.logo , u.province
@@ -26,8 +26,10 @@ if (!empty($keyword)) {
 
 // Add job type filter
 if (!empty($job_types)) {
-    $job_type_list = implode("','", array_map('addslashes', $job_types));
-    $where_clause[] = "j.job_type IN ('$job_type_list')";}
+    $job_type_conditions = array_map(fn($type) => "j.job_type = '" . addslashes($type) . "'", $job_types);
+    $where_clause[] = '(' . implode(' OR ', $job_type_conditions) . ')';
+}
+
 
 // Add location filter
 if (!empty($job_location) && $job_location !== 'all') { // 'all' is for no filtering
