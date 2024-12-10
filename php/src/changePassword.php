@@ -25,6 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error_message = "Old password is incorrect.";
     } elseif ($new_password !== $confirm_password) {
         $error_message = "The new password and confirmation password do not match.";
+    } elseif ($old_password === $new_password) {
+        $error_message = "New password must not be the same as the old password.";
     } else {
         // Hash the new password
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
@@ -34,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ss", $hashed_password, $user_id);
 
         if ($stmt->execute()) {
-            $success_message = "รหัสผ่านถูกเปลี่ยนเรียบร้อยแล้ว";
+            $success_message = "Password has been changed successfully.";
         } else {
-            $error_message = "เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน: " . $stmt->error;
+            $error_message = "An error occurred while changing the password." . $stmt->error;
         }
     }
 }
