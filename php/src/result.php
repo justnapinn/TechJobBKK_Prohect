@@ -7,8 +7,10 @@ include('checkLogin.php');
 
 // Get search parameters from the form
 $keyword = $_GET['keyword'] ?? '';
-$job_type = $_GET['job-type'] ?? '';
+$job_type = $_GET['job-type'] ?? [];
 $job_location = $_GET['location'] ?? '';
+
+$job_types = is_array($job_type) ? array_filter($job_type, fn($type) => in_array($type, ['hybrid', 'remote', 'onsite'])) : [];
 
 // Build the SQL query based on the search parameters
 $sql = "SELECT j.*, u.first_name, u.logo , u.province
@@ -23,9 +25,9 @@ if (!empty($keyword)) {
 }
 
 // Add job type filter
-if (!empty($job_type)) {
-    $where_clause[] = "j.job_type = '$job_type'";
-}
+if (!empty($job_types)) {
+    $job_type_list = implode("','", array_map('addslashes', $job_types));
+    $where_clause[] = "j.job_type IN ('$job_type_list')";}
 
 // Add location filter
 if (!empty($job_location) && $job_location !== 'all') { // 'all' is for no filtering
