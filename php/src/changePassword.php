@@ -28,6 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error_message = "The new password and confirmation password do not match.";
     } elseif ($old_password === $new_password) {
         $error_message = "New password must not be the same as the old password.";
+    } elseif (strlen($new_password) < 8) {
+        $error_message = "New password must be at least 8 characters long.";
+    } elseif (!preg_match("/[\W_]/", $new_password)) {
+        $error_message = "New password must contain at least one special character.";
     } else {
         // Hash the new password
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
