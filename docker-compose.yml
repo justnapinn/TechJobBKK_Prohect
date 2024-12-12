@@ -12,6 +12,7 @@ services:
       - ./php/000-default.conf:/etc/apache2/sites-available/000-default.conf
     ports:
       - "80:80"
+    restart: always
   db:
     container_name: db
     image: mysql
